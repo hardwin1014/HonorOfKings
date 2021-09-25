@@ -8,19 +8,14 @@ const routes = [
     path: "/",
     name: "Main",
     component: () => import("../views/Main.vue"),
-    children:[
-      {
-        path: "/categories/create",
-        name: "CategoriesEdit",
-        component: () => import("../views/CategoriesEdit.vue")
-      },
+    children: [
       {
         path: "/categories/list",
         name: "CategoriesList",
-        component: () => import("../views/CategoriesList.vue")
+        component: () => import("../views/CategoriesList.vue"),
       },
-    ]
-  }
+    ],
+  },
 ];
 
 const router = new VueRouter({

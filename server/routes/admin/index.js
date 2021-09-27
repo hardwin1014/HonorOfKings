@@ -14,7 +14,6 @@ module.exports = app =>{
     // 修改分类接口
     router.put('/categories/:id', async (req, res) => {
         const model = await Category.findByIdAndUpdate(req.params.id, req.body)
-        console.log(req.body)
         res.send(model)
     })
 

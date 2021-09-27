@@ -119,8 +119,10 @@ export default {
     },
     async editCategory() {
       this.editDialogFormVisible = false;
-      console.log();
-      const res = await editCategories(this.editId, this.editForm);
+      const form = {
+        name: this.editForm.editName
+      }
+      const res = await editCategories(this.editId, form);
       console.log(res);
       await this.fetch();
     },

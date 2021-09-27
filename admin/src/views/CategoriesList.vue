@@ -13,6 +13,9 @@
             <el-button @click="handleClick(scope.row)" type="text" size="small"
               >编辑</el-button
             >
+            <el-button @click="delClick(scope.row)" type="text" size="small"
+              >删除</el-button
+            >
           </template>
         </el-table-column>
       </el-table>
@@ -58,6 +61,7 @@ import {
   addCategories,
   categoriesList,
   categoryDetail,
+  delCategory,
   editCategories,
 } from "../api/categories";
 export default {
@@ -120,11 +124,25 @@ export default {
     async editCategory() {
       this.editDialogFormVisible = false;
       const form = {
-        name: this.editForm.editName
-      }
+        name: this.editForm.editName,
+      };
       const res = await editCategories(this.editId, form);
       console.log(res);
       await this.fetch();
+    },
+    delClick(row) {
+      this.$confirm(`是否确定删除分类"${row.name}"?`, "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(async () => {
+          const res = await delCategory(row._id);
+          if (!JSON.parse(res.data).success) return;
+          await this.fetch();
+          this.$message.success("删除成功！");
+        })
+        .catch((err) => err);
     },
   },
 };

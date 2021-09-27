@@ -29,5 +29,13 @@ module.exports = app =>{
         res.send(model)
     })
 
+    // 删除分类
+    router.delete('/categoryById/:id', async (req, res) => {
+        await Category.findByIdAndDelete(req.params.id,req.body)
+        res.send({
+            success: true
+        })
+    })
+
     app.use('/admin/api',router) // 设置中间件
 }

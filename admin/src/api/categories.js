@@ -33,3 +33,11 @@ export function categoryDetail(id) {
     method: "GET",
   });
 }
+
+// 删除分类
+export function delCategory(id) {
+  return request({
+    url: `/categoryById/${id}`,
+    method: "DELETE",
+  });
+}

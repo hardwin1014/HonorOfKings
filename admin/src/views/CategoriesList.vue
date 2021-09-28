@@ -7,6 +7,11 @@
       <h1>分类列表</h1>
       <el-table :data="items">
         <el-table-column prop="_id" label="ID" width="220"></el-table-column>
+        <el-table-column
+          prop="parent.name"
+          label="上级分类"
+          width="220"
+        ></el-table-column>
         <el-table-column prop="name" label="分类名称"></el-table-column>
         <el-table-column label="操作" width="180">
           <template slot-scope="scope">
@@ -22,6 +27,17 @@
       <!--    新增分类-->
       <el-dialog title="新增分类" :visible.sync="addDialogFormVisible">
         <el-form :model="addForm" :rules="addRules" ref="ruleAddForm">
+          <el-form-item label="上级分类" :label-width="formLabelWidth">
+            <el-select v-model="addForm.parent" style="width: 100%">
+              <el-option
+                v-for="item in parentOptions"
+                :key="item._id"
+                :label="item.name"
+                :value="item._id"
+              >
+              </el-option>
+            </el-select>
+          </el-form-item>
           <el-form-item
             label="分类名称"
             required
@@ -39,12 +55,23 @@
       <!--    编辑分类-->
       <el-dialog title="修改" :visible.sync="editDialogFormVisible">
         <el-form :model="editForm" :rules="editRules" ref="ruleEditForm">
+          <el-form-item label="上级分类" :label-width="formLabelWidth">
+            <el-select v-model="editForm.parent" style="width: 100%">
+              <el-option
+                v-for="item in parentOptions"
+                :key="item._id"
+                :label="item.name"
+                :value="item._id"
+              >
+              </el-option>
+            </el-select>
+          </el-form-item>
           <el-form-item
             label="分类名称"
             :label-width="formLabelWidth"
-            prop="editName"
+            prop="name"
           >
-            <el-input v-model="editForm.editName" autocomplete="off"></el-input>
+            <el-input v-model="editForm.name" autocomplete="off"></el-input>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -73,9 +100,11 @@ export default {
       editDialogFormVisible: false,
       addForm: {
         name: "",
+        parent: "",
       },
       editForm: {
-        editName: "",
+        name: "",
+        parent: "",
       },
       editId: "",
       formLabelWidth: "100px",
@@ -83,14 +112,18 @@ export default {
         name: [{ required: true, message: "请输入分类名称", trigger: "blur" }],
       },
       editRules: {
-        editName: [
+        name: [
           { required: true, message: "请输入分类名称", trigger: "blur" },
         ],
       },
+      parentOptions: [],
     };
   },
   created() {
     this.fetch();
+  },
+  async mounted() {
+    await this.fetchParentOptions();
   },
   methods: {
     openAddDialog() {
@@ -101,8 +134,7 @@ export default {
       this.addDialogFormVisible = false;
       await this.$refs.ruleAddForm.validate(async (valid) => {
         if (valid) {
-          const res = await addCategories(this.addForm);
-          console.log(res);
+          await addCategories(this.addForm);
           this.$message.success("保存成功！");
           await this.fetch();
         } else {
@@ -119,14 +151,11 @@ export default {
       this.editDialogFormVisible = true;
       const res = await categoryDetail(row._id);
       this.editId = JSON.parse(res.data)._id;
-      this.editForm.editName = JSON.parse(res.data).name;
+      this.editForm.name = JSON.parse(res.data).name;
     },
     async editCategory() {
       this.editDialogFormVisible = false;
-      const form = {
-        name: this.editForm.editName,
-      };
-      const res = await editCategories(this.editId, form);
+      const res = await editCategories(this.editId, this.editForm);
       console.log(res);
       await this.fetch();
     },
@@ -143,6 +172,10 @@ export default {
           this.$message.success("删除成功！");
         })
         .catch((err) => err);
+    },
+    async fetchParentOptions() {
+      const res = await categoriesList();
+      this.parentOptions = JSON.parse(res.data);
     },
   },
 };

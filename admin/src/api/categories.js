@@ -3,7 +3,7 @@ import request from "../utils/request";
 // 创建分类
 export function addCategories(data) {
   return request({
-    url: "/categories",
+    url: "/rest/categories",
     method: "POST",
     data,
   });
@@ -12,7 +12,7 @@ export function addCategories(data) {
 // 修改分类
 export function editCategories(id, data) {
   return request({
-    url: `/categories/${id}`,
+    url: `/rest/categories/${id}`,
     method: "PUT",
     data,
   });
@@ -21,7 +21,7 @@ export function editCategories(id, data) {
 // 查看分类列表
 export function categoriesList() {
   return request({
-    url: "/categories",
+    url: "/rest/categories",
     method: "GET",
   });
 }
@@ -29,7 +29,7 @@ export function categoriesList() {
 // 查看分类详情
 export function categoryDetail(id) {
   return request({
-    url: `/categoryById/${id}`,
+    url: `/rest/categories/${id}`,
     method: "GET",
   });
 }
@@ -37,7 +37,7 @@ export function categoryDetail(id) {
 // 删除分类
 export function delCategory(id) {
   return request({
-    url: `/categoryById/${id}`,
+    url: `/rest/categories/${id}`,
     method: "DELETE",
   });
 }

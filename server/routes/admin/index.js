@@ -31,6 +31,7 @@ module.exports = app =>{
         if (req.Model.modelName === 'Category') {
             queryOptions.populate = 'parent'
         }
+        // 有的接口需要关联查询，有的不需要，所以使用setOptions 动态去提示
         const items = await req.Model.find().setOptions(queryOptions).limit(10);
         res.send(items);
     });
@@ -50,7 +51,9 @@ module.exports = app =>{
     })
 
     app.use('/admin/api/rest/:resource', async (req, res, next)=> {
-        const modelName = require('inflection').classify(req.params.resource); //将小写的复数形式转成大写的单数 inflection插件
+        // 将小写的复数形式转成大写的单数 inflection插件
+        // 最后在scheme里面找对应的模型
+        const modelName = require('inflection').classify(req.params.resource);
         req.Model = require(`../../models/${modelName}`);
         next()
     },router) // 设置中间件

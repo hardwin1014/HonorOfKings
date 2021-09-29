@@ -1,43 +1,43 @@
 import request from "../utils/request";
 
 // 创建分类
-export function addCategories(data) {
+export function addCategories(data, url) {
   return request({
-    url: "/rest/categories",
+    url: `/rest/${url}`,
     method: "POST",
     data,
   });
 }
 
 // 修改分类
-export function editCategories(id, data) {
+export function editCategories(id, data, url) {
   return request({
-    url: `/rest/categories/${id}`,
+    url: `/rest/${url}/${id}`,
     method: "PUT",
     data,
   });
 }
 
 // 查看分类列表
-export function categoriesList() {
+export function categoriesList(url) {
   return request({
-    url: "/rest/categories",
+    url: `/rest/${url}`,
     method: "GET",
   });
 }
 
 // 查看分类详情
-export function categoryDetail(id) {
+export function categoryDetail(id, url) {
   return request({
-    url: `/rest/categories/${id}`,
+    url: `/rest/${url}/${id}`,
     method: "GET",
   });
 }
 
 // 删除分类
-export function delCategory(id) {
+export function delCategory(id, url) {
   return request({
-    url: `/rest/categories/${id}`,
+    url: `/rest/${url}/${id}`,
     method: "DELETE",
   });
 }

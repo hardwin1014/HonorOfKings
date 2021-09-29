@@ -117,24 +117,26 @@ export default {
         ],
       },
       parentOptions: [],
+      categoriesURL: 'categories'
     };
   },
   created() {
     this.fetch();
   },
-  async mounted() {
-    await this.fetchParentOptions();
+  mounted() {
+    this.fetchParentOptions();
   },
   methods: {
     openAddDialog() {
       this.addDialogFormVisible = true;
       this.addForm.name = "";
+      this.addForm.parent = ""
     },
     async addCategory() {
       this.addDialogFormVisible = false;
       await this.$refs.ruleAddForm.validate(async (valid) => {
         if (valid) {
-          await addCategories(this.addForm);
+          await addCategories(this.addForm,this.categoriesURL);
           this.$message.success("保存成功！");
           await this.fetch();
         } else {
@@ -144,18 +146,18 @@ export default {
       });
     },
     async fetch() {
-      const res = await categoriesList();
+      const res = await categoriesList(this.categoriesURL);
       this.items = JSON.parse(res.data);
     },
     async handleClick(row) {
       this.editDialogFormVisible = true;
-      const res = await categoryDetail(row._id);
+      const res = await categoryDetail(row._id, this.categoriesURL);
       this.editId = JSON.parse(res.data)._id;
       this.editForm.name = JSON.parse(res.data).name;
     },
     async editCategory() {
       this.editDialogFormVisible = false;
-      const res = await editCategories(this.editId, this.editForm);
+      const res = await editCategories(this.editId, this.editForm, this.categoriesURL);
       console.log(res);
       await this.fetch();
     },
@@ -166,7 +168,7 @@ export default {
         type: "warning",
       })
         .then(async () => {
-          const res = await delCategory(row._id);
+          const res = await delCategory(row._id, this.categoriesURL);
           if (!JSON.parse(res.data).success) return;
           await this.fetch();
           this.$message.success("删除成功！");
@@ -174,7 +176,7 @@ export default {
         .catch((err) => err);
     },
     async fetchParentOptions() {
-      const res = await categoriesList();
+      const res = await categoriesList(this.categoriesURL);
       this.parentOptions = JSON.parse(res.data);
     },
   },

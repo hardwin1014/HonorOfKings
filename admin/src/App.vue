@@ -6,13 +6,12 @@
 <script>
 export default {
   name: "app",
-  components: {
-  },
+  components: {},
 };
 </script>
 
 <style>
-*{
+* {
   margin: 0;
   padding: 0;
 }

@@ -5,15 +5,14 @@
         >新增分类</el-button
       >
       <h1>分类列表</h1>
-      <el-table :data="items">
-        <el-table-column prop="_id" label="ID" width="220"></el-table-column>
+      <el-table :data="items" class="flex1">
+        <el-table-column prop="_id" label="ID"></el-table-column>
         <el-table-column
           prop="parent.name"
           label="上级分类"
-          width="220"
         ></el-table-column>
         <el-table-column prop="name" label="分类名称"></el-table-column>
-        <el-table-column label="操作" width="180">
+        <el-table-column label="操作">
           <template slot-scope="scope">
             <el-button @click="handleClick(scope.row)" type="text" size="small"
               >编辑</el-button
@@ -53,7 +52,7 @@
         </div>
       </el-dialog>
       <!--    编辑分类-->
-      <el-dialog title="修改" :visible.sync="editDialogFormVisible">
+      <el-dialog title="修改分类" :visible.sync="editDialogFormVisible">
         <el-form :model="editForm" :rules="editRules" ref="ruleEditForm">
           <el-form-item label="上级分类" :label-width="formLabelWidth">
             <el-select v-model="editForm.parent" style="width: 100%">
@@ -112,12 +111,10 @@ export default {
         name: [{ required: true, message: "请输入分类名称", trigger: "blur" }],
       },
       editRules: {
-        name: [
-          { required: true, message: "请输入分类名称", trigger: "blur" },
-        ],
+        name: [{ required: true, message: "请输入分类名称", trigger: "blur" }],
       },
       parentOptions: [],
-      categoriesURL: 'categories'
+      categoriesURL: "categories",
     };
   },
   created() {
@@ -130,13 +127,13 @@ export default {
     openAddDialog() {
       this.addDialogFormVisible = true;
       this.addForm.name = "";
-      this.addForm.parent = ""
+      this.addForm.parent = "";
     },
     async addCategory() {
       this.addDialogFormVisible = false;
       await this.$refs.ruleAddForm.validate(async (valid) => {
         if (valid) {
-          await addCategories(this.addForm,this.categoriesURL);
+          await addCategories(this.addForm, this.categoriesURL);
           this.$message.success("保存成功！");
           await this.fetch();
         } else {
@@ -157,7 +154,11 @@ export default {
     },
     async editCategory() {
       this.editDialogFormVisible = false;
-      const res = await editCategories(this.editId, this.editForm, this.categoriesURL);
+      const res = await editCategories(
+        this.editId,
+        this.editForm,
+        this.categoriesURL
+      );
       console.log(res);
       await this.fetch();
     },
@@ -190,5 +191,11 @@ i
 }
 .addBtn {
   margin: 0 0 20px 0;
+}
+.flex1 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
 }
 </style>

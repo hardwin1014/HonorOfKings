@@ -3,9 +3,9 @@ const app = express()
 
 app.use(require('cors')()); // 跨域
 app.use(express.json());
+app.use('/uploads', express.static(__dirname + '/uploads'))
 
 require('./plugins/db')(app); // 数据库
-
 require('./routes/admin')(app); // 路由
 
 app.listen(3000,function (){

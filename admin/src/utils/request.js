@@ -7,7 +7,7 @@ export const request = axios.create({
     function (data) {
       try {
         // 如果转换成功则返回转换的数据结果
-        return data
+        return data;
       } catch (err) {
         // 如果转换失败，则包装为统一数据格式并返回
         return {

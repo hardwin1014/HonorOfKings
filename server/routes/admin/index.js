@@ -30,7 +30,7 @@ module.exports = app =>{
         const queryOptions = {};
         if (req.Model.modelName === 'Category') {
             queryOptions.populate = 'parent'
-        }
+        } //如果是分类就关联查询，不是的话就传空对象
         // 有的接口需要关联查询，有的不需要，所以使用setOptions 动态去提示
         const items = await req.Model.find().setOptions(queryOptions).limit(10);
         res.send(items);
@@ -57,4 +57,17 @@ module.exports = app =>{
         req.Model = require(`../../models/${modelName}`);
         next()
     },router) // 设置中间件
+
+
+    // 上传图片
+    // 使用一个专门处理上传文件的中间件，express无法处理上传的数据  multer
+    const multer = require('multer')
+    // dest: __dirname 表示当前文件夹绝对地址
+    const upload = multer({dest: __dirname + '/../../uploads'})
+    // 允许接口接收单个上传文件upload.single('file')  file是文件名称上传的
+    app.post('/admin/api/upload/',upload.single('file'), async (req, res) => {
+        const file = req.file // 一定要加upload才有res.file
+        file.url = `http://localhost:3000/uploads/${file.filename}`
+        res.send(file)
+    })
 }

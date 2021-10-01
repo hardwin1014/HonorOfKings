@@ -7,7 +7,6 @@ module.exports = app =>{
    // 导入Schema模板
    // const Category = require('../../models/Category')
 
-
     // 分类接口操作
     // 增
     router.post('/', async (req, res) => {
@@ -17,6 +16,7 @@ module.exports = app =>{
 
     // 改
     router.put('/:id', async (req, res) => {
+        console.log(req.params.id,req.body)
         const model = await req.Model.findByIdAndUpdate(req.params.id, req.body)
         res.send(model)
     })
@@ -65,7 +65,7 @@ module.exports = app =>{
     // dest: __dirname 表示当前文件夹绝对地址
     const upload = multer({dest: __dirname + '/../../uploads'})
     // 允许接口接收单个上传文件upload.single('file')  file是文件名称上传的
-    app.post('/admin/api/upload/',upload.single('file'), async (req, res) => {
+    app.post('/admin/api/upload',upload.single('file'), async (req, res) => {
         const file = req.file // 一定要加upload才有res.file
         file.url = `http://localhost:3000/uploads/${file.filename}`
         res.send(file)

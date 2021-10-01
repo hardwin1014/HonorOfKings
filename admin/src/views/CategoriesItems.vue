@@ -10,7 +10,7 @@
         <el-table-column prop="name" label="物品名称"></el-table-column>
         <el-table-column prop="icon" label="图标">
           <template slot-scope="scope">
-            <img :src="scope.row.icon" style="height: 3em" />
+            <img :src="scope.row.icon" style="height: 3em" alt="物品图标" />
           </template>
         </el-table-column>
         <el-table-column label="操作" width="180">
@@ -35,7 +35,7 @@
               class="avatar-uploader"
               action="http://127.0.0.1:3000/admin/api/upload"
               :show-file-list="false"
-              :on-success="afterUpload"
+              :on-success="addUpload"
             >
               <img v-if="addForm.icon" :src="addForm.icon" class="avatar" />
               <i v-else class="el-icon-plus avatar-uploader-icon"></i>
@@ -50,15 +50,19 @@
       <!--    编辑分类-->
       <el-dialog title="修改物品" :visible.sync="editDialogFormVisible">
         <el-form :model="editForm">
-          <el-form-item label="上级分类" :label-width="formLabelWidth">
+          <el-form-item label="名称" :label-width="formLabelWidth" prop="name">
             <el-input v-model="editForm.name" autocomplete="off"></el-input>
           </el-form-item>
-          <el-form-item
-            label="分类名称"
-            :label-width="formLabelWidth"
-            prop="name"
-          >
-            <el-input v-model="editForm.name" autocomplete="off"></el-input>
+          <el-form-item label="icon" :label-width="formLabelWidth" prop="icon">
+            <el-upload
+              class="avatar-uploader"
+              action="http://127.0.0.1:3000/admin/api/upload"
+              :show-file-list="false"
+              :on-success="editUpload"
+            >
+              <img v-if="editForm.icon" :src="editForm.icon" class="avatar" />
+              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+            </el-upload>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -76,6 +80,7 @@ import {
   categoriesList,
   delCategory,
   editCategories,
+  // categoryDetail,
 } from "../api/categories";
 export default {
   name: "CategoriesItems",
@@ -94,6 +99,7 @@ export default {
       addDialogFormVisible: false,
       editDialogFormVisible: false,
       itemsUrl: "items",
+      editId: "",
     };
   },
   created() {},
@@ -115,12 +121,14 @@ export default {
     async fetch() {
       const res = await categoriesList(this.itemsUrl);
       this.items = JSON.parse(res.data);
+      console.log(this.items);
     },
-    async handleClick() {
+    async handleClick(row) {
+      console.log(row);
       this.editDialogFormVisible = true;
-      // const res = await categoryDetail(row._id, this.itemsUrl);
-      // this.editId = JSON.parse(res.data)._id;
-      // this.editForm.name = JSON.parse(res.data).name;
+      this.editForm.name = row.name;
+      this.editForm.icon = row.icon;
+      this.editId = row._id;
     },
     delClick(row) {
       this.$confirm(`是否确定删除分类"${row.name}"?`, "提示", {
@@ -138,17 +146,19 @@ export default {
     },
     async editCategory() {
       this.editDialogFormVisible = false;
-      const res = await editCategories(
-        this.editId,
-        this.editForm,
-        this.itemsUrl
-      );
-      console.log(res);
+      await editCategories(this.editId, this.editForm, this.itemsUrl);
       await this.fetch();
     },
-    afterUpload(res, file) {
+    addUpload(res) {
+      console.log(111);
       // res表示服务端的响应，file是图片信息
-      this.addForm.icon = URL.createObjectURL(file.raw);
+      // this.$set(this.model,'icon',res.url)
+      this.addForm.icon = res.url;
+    },
+    editUpload(res) {
+      // res表示服务端的响应，file是图片信息
+      // this.$set(this.model,'icon',res.url)
+      this.editForm.icon = res.url;
     },
   },
 };

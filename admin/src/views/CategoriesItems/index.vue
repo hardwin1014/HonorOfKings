@@ -81,7 +81,7 @@ import {
   delCategory,
   editCategories,
   // categoryDetail,
-} from "../api/categories";
+} from "api/categories";
 export default {
   name: "CategoriesItems",
   data() {

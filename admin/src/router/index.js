@@ -12,12 +12,17 @@ const routes = [
       {
         path: "/categories/list",
         name: "CategoriesList",
-        component: () => import("../views/CategoriesList.vue"),
+        component: () => import("../views/CategoriesList/index.vue"),
       },
       {
         path: "/categories/items",
         name: "CategoriesItems",
-        component: () => import("../views/CategoriesItems.vue"),
+        component: () => import("../views/CategoriesItems/index.vue"),
+      },
+      {
+        path: "/categories/heroes",
+        name: "CategoriesHeroes",
+        component: () => import("../views/CategoriesHeroes/index.vue"),
       },
     ],
   },

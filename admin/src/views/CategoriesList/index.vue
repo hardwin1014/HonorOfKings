@@ -7,10 +7,7 @@
       <h1>分类列表</h1>
       <el-table :data="items" class="flex1">
         <el-table-column prop="_id" label="ID"></el-table-column>
-        <el-table-column
-          prop="parent.name"
-          label="上级分类"
-        ></el-table-column>
+        <el-table-column prop="parent.name" label="上级分类"></el-table-column>
         <el-table-column prop="name" label="分类名称"></el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
@@ -89,7 +86,7 @@ import {
   categoryDetail,
   delCategory,
   editCategories,
-} from "../api/categories";
+} from "api/categories";
 export default {
   name: "CategoriesList",
   data() {

@@ -30,7 +30,41 @@
           <el-form-item label="名称" :label-width="formLabelWidth">
             <el-input v-model="addForm.name" autocomplete="off"></el-input>
           </el-form-item>
-          <el-form-item label="头像" :label-width="formLabelWidth" prop="avatar">
+          <el-form-item label="称号" :label-width="formLabelWidth">
+            <el-input v-model="addForm.title" autocomplete="off"></el-input>
+          </el-form-item>
+          <!--          分类可以多选-->
+          <el-form-item label="类型" :label-width="formLabelWidth">
+            <el-select
+              v-model="addForm.categories"
+              multiple
+              placeholder="请选择分类"
+            >
+              <el-option
+                v-for="item of categoriesList"
+                :label="item.name"
+                :value="item._id"
+                :key="item._id"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="难度" :label-width="formLabelWidth">
+            <el-input
+              v-model="addForm.scores.difficult"
+              autocomplete="off"
+            ></el-input>
+          </el-form-item>
+          <el-form-item label="称号" :label-width="formLabelWidth">
+            <el-input v-model="addForm.title" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="称号" :label-width="formLabelWidth">
+            <el-input v-model="addForm.title" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item
+            label="头像"
+            :label-width="formLabelWidth"
+            prop="avatar"
+          >
             <el-upload
               class="avatar-uploader"
               action="http://127.0.0.1:3000/admin/api/upload"
@@ -53,14 +87,25 @@
           <el-form-item label="名称" :label-width="formLabelWidth" prop="name">
             <el-input v-model="editForm.name" autocomplete="off"></el-input>
           </el-form-item>
-          <el-form-item label="avatar" :label-width="formLabelWidth" prop="avatar">
+          <el-form-item label="称号" :label-width="formLabelWidth">
+            <el-input v-model="editForm.title" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item
+            label="avatar"
+            :label-width="formLabelWidth"
+            prop="avatar"
+          >
             <el-upload
               class="avatar-uploader"
               action="http://127.0.0.1:3000/admin/api/upload"
               :show-file-list="false"
               :on-success="editUpload"
             >
-              <img v-if="editForm.avatar" :src="editForm.avatar" class="avatar" />
+              <img
+                v-if="editForm.avatar"
+                :src="editForm.avatar"
+                class="avatar"
+              />
               <i v-else class="el-icon-plus avatar-uploader-avatar"></i>
             </el-upload>
           </el-form-item>
@@ -90,19 +135,29 @@ export default {
       addForm: {
         name: "",
         avatar: "",
+        title: "",
+        categories: "",
+        scores: {},
       },
       editForm: {
         name: "",
         avatar: "",
+        title: "",
+        categories: "",
+        scores: {},
       },
       formLabelWidth: "100px",
       addDialogFormVisible: false,
       editDialogFormVisible: false,
       heroesUrl: "heroes",
+      categoryUrl: "categories",
       editId: "",
+      categoriesList: [],
     };
   },
-  created() {},
+  created() {
+    this.fetchCategories();
+  },
   mounted() {
     this.fetch();
   },
@@ -120,7 +175,12 @@ export default {
     },
     async fetch() {
       const res = await categoriesList(this.heroesUrl);
-      this.items = JSON.parse(res.data);
+      // 合并两个对象，不会完全合并
+      this.items = Object.assign({}, this.items, JSON.parse(res.data));
+    },
+    async fetchCategories() {
+      const res = await categoriesList(this.categoryUrl);
+      this.categoriesList = JSON.parse(res.data);
     },
     async handleClick(row) {
       this.editDialogFormVisible = true;

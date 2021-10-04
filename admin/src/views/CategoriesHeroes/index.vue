@@ -8,6 +8,7 @@
       <el-table :data="items" class="flex1">
         <el-table-column prop="_id" label="ID"></el-table-column>
         <el-table-column prop="name" label="英雄名称"></el-table-column>
+        <el-table-column prop="title" label="称号"></el-table-column>
         <el-table-column prop="avatar" label="头像">
           <template slot-scope="scope">
             <img :src="scope.row.avatar" style="height: 3em" alt="英雄头像" />
@@ -33,6 +34,21 @@
           <el-form-item label="称号" :label-width="formLabelWidth">
             <el-input v-model="addForm.title" autocomplete="off"></el-input>
           </el-form-item>
+          <el-form-item
+            label="头像"
+            :label-width="formLabelWidth"
+            prop="avatar"
+          >
+            <el-upload
+              class="avatar-uploader"
+              action="http://127.0.0.1:3000/admin/api/upload"
+              :show-file-list="false"
+              :on-success="addUpload"
+            >
+              <img v-if="addForm.avatar" :src="addForm.avatar" class="avatar" />
+              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+            </el-upload>
+          </el-form-item>
           <!--          分类可以多选-->
           <el-form-item label="类型" :label-width="formLabelWidth">
             <el-select
@@ -49,31 +65,75 @@
             </el-select>
           </el-form-item>
           <el-form-item label="难度" :label-width="formLabelWidth">
-            <el-input
+            <el-rate
+              :max="10"
+              show-score
+              style="margin-top: 10px"
               v-model="addForm.scores.difficult"
+              autocomplete="off"
+            ></el-rate>
+          </el-form-item>
+          <el-form-item label="技能" :label-width="formLabelWidth">
+            <el-rate
+              :max="10"
+              show-score
+              style="margin-top: 10px"
+              v-model="addForm.scores.skills"
+              autocomplete="off"
+            ></el-rate>
+          </el-form-item>
+          <el-form-item label="攻击" :label-width="formLabelWidth">
+            <el-rate
+              :max="10"
+              show-score
+              style="margin-top: 10px"
+              v-model="addForm.scores.attack"
+              autocomplete="off"
+            ></el-rate>
+          </el-form-item>
+          <el-form-item label="生存" :label-width="formLabelWidth">
+            <el-rate
+              :max="10"
+              show-score
+              style="margin-top: 10px"
+              v-model="addForm.scores.survive"
+              autocomplete="off"
+            ></el-rate>
+          </el-form-item>
+          <el-form-item label="顺风出装" :label-width="formLabelWidth">
+            <el-select v-model="addForm.items1" multiple>
+              <el-option
+                v-for="item of equips"
+                :label="item.name"
+                :value="item._id"
+                :key="item._id"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="逆风出装" :label-width="formLabelWidth">
+            <el-select v-model="addForm.items2" multiple>
+              <el-option
+                v-for="item of equips"
+                :label="item.name"
+                :value="item._id"
+                :key="item._id"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="使用技巧" :label-width="formLabelWidth">
+            <el-input v-model="addForm.usageTips" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="对战技巧" :label-width="formLabelWidth">
+            <el-input
+              v-model="addForm.battleTips"
               autocomplete="off"
             ></el-input>
           </el-form-item>
-          <el-form-item label="称号" :label-width="formLabelWidth">
-            <el-input v-model="addForm.title" autocomplete="off"></el-input>
+          <el-form-item label="团战思路" :label-width="formLabelWidth">
+            <el-input v-model="addForm.teamTips" autocomplete="off"></el-input>
           </el-form-item>
           <el-form-item label="称号" :label-width="formLabelWidth">
             <el-input v-model="addForm.title" autocomplete="off"></el-input>
-          </el-form-item>
-          <el-form-item
-            label="头像"
-            :label-width="formLabelWidth"
-            prop="avatar"
-          >
-            <el-upload
-              class="avatar-uploader"
-              action="http://127.0.0.1:3000/admin/api/upload"
-              :show-file-list="false"
-              :on-success="addUpload"
-            >
-              <img v-if="addForm.avatar" :src="addForm.avatar" class="avatar" />
-              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-            </el-upload>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -137,7 +197,18 @@ export default {
         avatar: "",
         title: "",
         categories: "",
-        scores: {},
+        scores: {
+          difficult: 0,
+          skills: 0,
+          attack: 0,
+          survive: 0,
+        },
+        items1: [],
+        items2: [],
+        usageTips: "",
+        battleTips: "",
+        teamTips: "",
+        partners: [],
       },
       editForm: {
         name: "",
@@ -151,12 +222,15 @@ export default {
       editDialogFormVisible: false,
       heroesUrl: "heroes",
       categoryUrl: "categories",
+      itemsUrl: "items",
       editId: "",
       categoriesList: [],
+      equips: [],
     };
   },
   created() {
     this.fetchCategories();
+    this.fetchEquips();
   },
   mounted() {
     this.fetch();
@@ -176,11 +250,16 @@ export default {
     async fetch() {
       const res = await categoriesList(this.heroesUrl);
       // 合并两个对象，不会完全合并
-      this.items = Object.assign({}, this.items, JSON.parse(res.data));
+      this.items = Object.assign([], this.items, JSON.parse(res.data));
+      console.log(this.items);
     },
     async fetchCategories() {
       const res = await categoriesList(this.categoryUrl);
       this.categoriesList = JSON.parse(res.data);
+    },
+    async fetchEquips() {
+      const res = await categoriesList(this.itemsUrl);
+      this.equips = JSON.parse(res.data);
     },
     async handleClick(row) {
       this.editDialogFormVisible = true;

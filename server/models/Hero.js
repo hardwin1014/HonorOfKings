@@ -26,6 +26,7 @@ const schema = new mongoose.Schema({
     // 顺风出装，逆风出装
     items1: [{ type: mongoose.SchemaTypes.ObjectId, ref: 'Item' }],
     items2: [{ type: mongoose.SchemaTypes.ObjectId, ref: 'Item' }],
+    // 使用技巧
     usageTips: { type: String },
     // 对战技巧
     battleTips: { type: String },

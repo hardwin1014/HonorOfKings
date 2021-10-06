@@ -2,7 +2,9 @@
 node_vue全栈项目
 
    admin 是后台管理app的 vue2 + Element
+   
    frontend是app移动端项目 vue2
+   
    server是使用express+Mongodb
 
 npm install

@@ -582,9 +582,8 @@ export default {
 };
 </script>
 <style scoped>
-.el-dialog {
-  width: 50%;
-  height: 100%;
+::v-deep .el-dialog {
+  width: 70% !important;
 }
 .addBtn {
   margin: 0 0 20px 0;

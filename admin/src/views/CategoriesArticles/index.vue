@@ -21,7 +21,7 @@
       </el-table>
       <!--    新增文章-->
       <el-dialog title="新增文章" :visible.sync="addDialogFormVisible">
-        <el-form :model="addForm" :rules="addRules" ref="ruleAddForm">
+        <el-form :model="addForm" ref="ruleAddForm">
           <el-form-item
             label="所属分类"
             :label-width="formLabelWidth"
@@ -45,6 +45,11 @@
           <el-form-item label="标题" :label-width="formLabelWidth" prop="title">
             <el-input v-model="addForm.title" autocomplete="off"></el-input>
           </el-form-item>
+          <el-form-item label="详情" :label-width="formLabelWidth" prop="body">
+            <vue-editor v-model="addForm.body"
+                        useCustomImageHandler
+                        @image-added="handleImageAdded"></vue-editor>
+          </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button @click="addDialogFormVisible = false">取 消</el-button>
@@ -53,7 +58,7 @@
       </el-dialog>
       <!--    编辑文章-->
       <el-dialog title="修改文章" :visible.sync="editDialogFormVisible">
-        <el-form :model="editForm" :rules="editRules" ref="ruleEditForm">
+        <el-form :model="editForm" ref="ruleEditForm">
           <el-form-item
             label="所属分类"
             :label-width="formLabelWidth"
@@ -77,6 +82,11 @@
           <el-form-item label="标题" :label-width="formLabelWidth" prop="title">
             <el-input v-model="editForm.title" autocomplete="off"></el-input>
           </el-form-item>
+          <el-form-item label="详情" :label-width="formLabelWidth" prop="body">
+            <vue-editor v-model="editForm.body"
+                        useCustomImageHandler
+                        @image-added="handleImageAdded"></vue-editor>
+          </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button @click="editDialogFormVisible = false">取 消</el-button>
@@ -95,8 +105,12 @@ import {
   delCategory,
   editCategories,
 } from "api/categories";
+import { VueEditor } from "vue2-editor";
 export default {
   name: "CategoriesList",
+  components: {
+    VueEditor,
+  },
   data() {
     return {
       items: [],
@@ -182,14 +196,32 @@ export default {
       const res = await categoriesList(this.categoriesURL);
       this.categories = JSON.parse(res.data);
     },
+    // vue2-editor的方法
+    async handleImageAdded(file, Editor, cursorLocation, resetUploader) {
+      const formData = new FormData();
+      formData.append("image", file);
+      axios({
+        url: "https://fakeapi.yoursite.com/images",
+        method: "POST",
+        data: formData
+      })
+          .then(result => {
+            const url = result.data.url; // Get url from response
+            Editor.insertEmbed(cursorLocation, "image", url);
+            resetUploader();
+          })
+          .catch(err => {
+            console.log(err);
+          });
+    }
+  }
   },
 };
 </script>
 i
 <style scoped>
-.el-dialog {
-  width: 50%;
-  height: 100%;
+::v-deep .el-dialog {
+  width: 70% !important;
 }
 .addBtn {
   margin: 0 0 20px 0;

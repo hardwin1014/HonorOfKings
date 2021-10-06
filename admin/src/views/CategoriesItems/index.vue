@@ -26,7 +26,7 @@
       </el-table>
       <!--    新增分类-->
       <el-dialog title="新增物品" :visible.sync="addDialogFormVisible">
-        <el-form :model="addForm">
+        <el-form :model="addForm" ref="addFormRef">
           <el-form-item label="名称" :label-width="formLabelWidth">
             <el-input v-model="addForm.name" autocomplete="off"></el-input>
           </el-form-item>
@@ -109,8 +109,9 @@ export default {
   methods: {
     openAddDialog() {
       this.addDialogFormVisible = true;
-      this.addForm.name = "";
-      this.addForm.icon = "";
+      this.$nextTick(() => {
+        this.$refs.addFormRef.resetFields();
+      });
     },
     async addCategory() {
       this.addDialogFormVisible = false;
@@ -121,10 +122,8 @@ export default {
     async fetch() {
       const res = await categoriesList(this.itemsUrl);
       this.items = JSON.parse(res.data);
-      console.log(this.items);
     },
     async handleClick(row) {
-      console.log(row);
       this.editDialogFormVisible = true;
       this.editForm.name = row.name;
       this.editForm.icon = row.icon;
@@ -170,34 +169,5 @@ export default {
 }
 .addBtn {
   margin: 0 0 20px 0;
-}
-::v-deep .avatar-uploader .el-upload {
-  border: 1px dashed #d9d9d9;
-  border-radius: 6px;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-}
-.avatar-uploader .el-upload:hover {
-  border-color: #409eff;
-}
-.avatar-uploader-icon {
-  font-size: 28px;
-  color: #8c939d;
-  width: 178px;
-  height: 178px;
-  line-height: 178px;
-  text-align: center;
-}
-.avatar {
-  width: 178px;
-  height: 178px;
-  display: block;
-}
-.flex1 {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
 }
 </style>

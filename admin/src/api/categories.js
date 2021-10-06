@@ -41,3 +41,13 @@ export function delCategory(id, url) {
     method: "DELETE",
   });
 }
+
+// 上传
+//http://127.0.0.1:3000/admin/api/upload
+export function uploadPic(data) {
+  return request({
+    url: "/upload",
+    method: "POST",
+    data,
+  });
+}

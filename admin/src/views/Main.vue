@@ -20,6 +20,10 @@
             <template slot="title">文章</template>
             <el-menu-item index="/categories/articles">文章列表</el-menu-item>
           </el-menu-item-group>
+          <el-menu-item-group>
+            <template slot="title">广告位</template>
+            <el-menu-item index="/categories/ads">广告位列表</el-menu-item>
+          </el-menu-item-group>
         </el-submenu>
       </el-menu>
     </el-aside>

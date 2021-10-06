@@ -46,9 +46,11 @@
             <el-input v-model="addForm.title" autocomplete="off"></el-input>
           </el-form-item>
           <el-form-item label="详情" :label-width="formLabelWidth" prop="body">
-            <vue-editor v-model="addForm.body"
-                        useCustomImageHandler
-                        @image-added="handleImageAdded"></vue-editor>
+            <vue-editor
+              v-model="addForm.body"
+              useCustomImageHandler
+              @image-added="handleImageAdded"
+            ></vue-editor>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -83,9 +85,11 @@
             <el-input v-model="editForm.title" autocomplete="off"></el-input>
           </el-form-item>
           <el-form-item label="详情" :label-width="formLabelWidth" prop="body">
-            <vue-editor v-model="editForm.body"
-                        useCustomImageHandler
-                        @image-added="handleImageAdded"></vue-editor>
+            <vue-editor
+              v-model="editForm.body"
+              useCustomImageHandler
+              @image-added="handleImageAdded"
+            ></vue-editor>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -104,6 +108,7 @@ import {
   categoryDetail,
   delCategory,
   editCategories,
+  uploadPic,
 } from "api/categories";
 import { VueEditor } from "vue2-editor";
 export default {
@@ -146,16 +151,9 @@ export default {
     },
     async addCategory() {
       this.addDialogFormVisible = false;
-      await this.$refs.ruleAddForm.validate(async (valid) => {
-        if (valid) {
-          await addCategories(this.addForm, this.articlesURL);
-          this.$message.success("保存成功！");
-          await this.fetch();
-        } else {
-          this.$message.warning("请输入标题");
-          return false;
-        }
-      });
+      await addCategories(this.addForm, this.articlesURL);
+      this.$message.success("保存成功！");
+      await this.fetch();
     },
     async fetch() {
       const res = await categoriesList(this.articlesURL);
@@ -165,16 +163,11 @@ export default {
       this.editDialogFormVisible = true;
       const res = await categoryDetail(row._id, this.articlesURL);
       this.editId = JSON.parse(res.data)._id;
-      this.editForm = Object.assign(this.editForm, JSON.parse(res.data));
+      this.editForm = Object.assign({}, this.editForm, JSON.parse(res.data));
     },
     async editCategory() {
       this.editDialogFormVisible = false;
-      const res = await editCategories(
-        this.editId,
-        this.editForm,
-        this.articlesURL
-      );
-      console.log(res);
+      await editCategories(this.editId, this.editForm, this.articlesURL);
       await this.fetch();
     },
     delClick(row) {
@@ -199,37 +192,21 @@ export default {
     // vue2-editor的方法
     async handleImageAdded(file, Editor, cursorLocation, resetUploader) {
       const formData = new FormData();
-      formData.append("image", file);
-      axios({
-        url: "https://fakeapi.yoursite.com/images",
-        method: "POST",
-        data: formData
-      })
-          .then(result => {
-            const url = result.data.url; // Get url from response
-            Editor.insertEmbed(cursorLocation, "image", url);
-            resetUploader();
-          })
-          .catch(err => {
-            console.log(err);
-          });
-    }
-  }
+      formData.append("file", file);
+      const res = await uploadPic(formData);
+      // 光标位置插入一张图片,地址
+      Editor.insertEmbed(cursorLocation, "image", JSON.parse(res.data).url);
+      resetUploader(); // 重置上传的东西
+    },
   },
 };
 </script>
-i
 <style scoped>
-::v-deep .el-dialog {
-  width: 70% !important;
-}
 .addBtn {
   margin: 0 0 20px 0;
 }
-.flex1 {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
+::v-deep .ql-editor img {
+  width: 178px;
+  height: 178px;
 }
 </style>

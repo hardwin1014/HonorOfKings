@@ -22,7 +22,7 @@
       </el-table>
       <!--    新增分类-->
       <el-dialog title="新增分类" :visible.sync="addDialogFormVisible">
-        <el-form :model="addForm" :rules="addRules" ref="ruleAddForm">
+        <el-form :model="addForm" ref="ruleAddForm">
           <el-form-item label="上级分类" :label-width="formLabelWidth">
             <el-select v-model="addForm.parent" style="width: 100%">
               <el-option
@@ -36,7 +36,6 @@
           </el-form-item>
           <el-form-item
             label="分类名称"
-            required
             :label-width="formLabelWidth"
             prop="name"
           >
@@ -50,7 +49,7 @@
       </el-dialog>
       <!--    编辑分类-->
       <el-dialog title="修改分类" :visible.sync="editDialogFormVisible">
-        <el-form :model="editForm" :rules="editRules" ref="ruleEditForm">
+        <el-form :model="editForm" ref="ruleEditForm">
           <el-form-item label="上级分类" :label-width="formLabelWidth">
             <el-select v-model="editForm.parent" style="width: 100%">
               <el-option
@@ -104,12 +103,6 @@ export default {
       },
       editId: "",
       formLabelWidth: "100px",
-      addRules: {
-        name: [{ required: true, message: "请输入分类名称", trigger: "blur" }],
-      },
-      editRules: {
-        name: [{ required: true, message: "请输入分类名称", trigger: "blur" }],
-      },
       parentOptions: [],
       categoriesURL: "categories",
     };
@@ -123,8 +116,9 @@ export default {
   methods: {
     openAddDialog() {
       this.addDialogFormVisible = true;
-      this.addForm.name = "";
-      this.addForm.parent = "";
+      this.$nextTick(() => {
+        this.$refs.ruleAddForm.resetFields();
+      });
     },
     async addCategory() {
       this.addDialogFormVisible = false;
@@ -151,12 +145,7 @@ export default {
     },
     async editCategory() {
       this.editDialogFormVisible = false;
-      const res = await editCategories(
-        this.editId,
-        this.editForm,
-        this.categoriesURL
-      );
-      console.log(res);
+      await editCategories(this.editId, this.editForm, this.categoriesURL);
       await this.fetch();
     },
     delClick(row) {
@@ -180,7 +169,6 @@ export default {
   },
 };
 </script>
-i
 <style scoped>
 .el-dialog {
   width: 50%;
@@ -188,11 +176,5 @@ i
 }
 .addBtn {
   margin: 0 0 20px 0;
-}
-.flex1 {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
 }
 </style>

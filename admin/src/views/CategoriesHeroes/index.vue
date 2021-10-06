@@ -32,8 +32,8 @@
         :visible.sync="addDialogFormVisible"
       >
         <el-form :model="addForm" ref="addFormRefs">
-          <el-tabs value="skills" type="border-card">
-            <el-tab-pane label="基础信息">
+          <el-tabs value="baseInfo" type="border-card">
+            <el-tab-pane label="基础信息" name="baseInfo">
               <el-form-item
                 label="名称"
                 :label-width="formLabelWidth"
@@ -537,8 +537,7 @@ export default {
     async fetch() {
       const res = await categoriesList(this.heroesUrl);
       // 合并两个对象，不会完全合并
-      this.items = Object.assign([], this.items, JSON.parse(res.data));
-      console.log(this.items);
+      this.items = JSON.parse(res.data);
     },
     async fetchCategories() {
       const res = await categoriesList(this.categoryUrl);
@@ -550,8 +549,7 @@ export default {
     },
     async handleClick(row) {
       this.editDialogFormVisible = true;
-      console.log(row);
-      this.editForm = Object.assign(this.editForm, row);
+      this.editForm = Object.assign({}, this.editForm, row);
     },
     delClick(row) {
       this.$confirm(`是否确定删除分类"${row.name}"?`, "提示", {
@@ -582,42 +580,7 @@ export default {
 };
 </script>
 <style scoped>
-::v-deep .el-dialog {
-  width: 70% !important;
-}
 .addBtn {
   margin: 0 0 20px 0;
-}
-::v-deep .avatar-uploader .el-upload {
-  border: 1px dashed #d9d9d9;
-  border-radius: 6px;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-}
-.avatar-uploader .el-upload:hover {
-  border-color: #409eff;
-}
-.avatar-uploader-icon {
-  font-size: 28px;
-  color: #8c939d;
-  width: 5em;
-  height: 5em;
-  line-height: 5em;
-  text-align: center;
-}
-.avatar {
-  width: 5em;
-  height: 5em;
-  display: block;
-}
-.flex1 {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-}
-.flex2 {
-  display: flex;
 }
 </style>

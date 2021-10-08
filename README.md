@@ -8,5 +8,9 @@ node_vue全栈项目
    server是使用express+Mongodb
 
 npm install
-去server文件中找plugins---> db.js 修改自己mongoose个人身份验证
+
+去server文件中找plugins---> db.js
+
+修改自己mongoose个人身份验证
+
 三个文件夹的启动方式都是  npm run serve 

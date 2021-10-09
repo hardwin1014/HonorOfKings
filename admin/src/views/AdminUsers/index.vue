@@ -8,6 +8,7 @@
       <el-table :data="items" class="flex1">
         <el-table-column prop="_id" label="ID"></el-table-column>
         <el-table-column prop="username" label="用户名"></el-table-column>
+        <!--        <el-table-column prop="password" label="密码"></el-table-column>-->
         <el-table-column label="操作">
           <template slot-scope="scope">
             <el-button @click="handleClick(scope.row)" type="text" size="small"
@@ -128,7 +129,7 @@ export default {
       this.editDialogFormVisible = true;
       const res = await categoryDetail(row._id, this.adminURL);
       this.editId = JSON.parse(res.data)._id;
-      this.editForm.name = JSON.parse(res.data).name;
+      this.editForm = Object.assign({}, this.editForm, JSON.parse(res.data));
     },
     async editCategory() {
       this.editDialogFormVisible = false;

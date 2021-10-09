@@ -266,7 +266,7 @@
         :visible.sync="editDialogFormVisible"
       >
         <el-form :model="editForm" ref="editFormRefs">
-          <el-tabs value="skills" type="border-card">
+          <el-tabs type="border-card">
             <el-tab-pane label="基础信息">
               <el-form-item label="名称" :label-width="formLabelWidth">
                 <el-input v-model="editForm.name" autocomplete="off"></el-input>
@@ -296,7 +296,7 @@
                   <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                 </el-upload>
               </el-form-item>
-              <!--          分类可以多选-->
+              <!--分类可以多选-->
               <el-form-item label="类型" :label-width="formLabelWidth">
                 <el-select
                   v-model="editForm.categories"
@@ -386,7 +386,7 @@
                 ></el-input>
               </el-form-item>
             </el-tab-pane>
-            <el-tab-pane label="技能" name="skills">
+            <el-tab-pane label="技能">
               <el-button
                 @click="editForm.skills.push({})"
                 style="margin-bottom: 20px"

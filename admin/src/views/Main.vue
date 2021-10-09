@@ -1,7 +1,7 @@
 <template>
   <el-container style="height: 100vh">
     <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
-      <el-menu router :default-openeds="['1', '3']">
+      <el-menu unique-opened :default-active="$route.path" router>
         <el-submenu index="1">
           <template slot="title"><i class="el-icon-box"></i>内容管理</template>
           <el-menu-item-group>
@@ -25,6 +25,24 @@
             <el-menu-item index="/categories/ads">广告位列表</el-menu-item>
           </el-menu-item-group>
         </el-submenu>
+        <el-submenu index="2">
+          <template slot="title">
+            <i class="el-icon-message"></i>运营管理
+          </template>
+          <el-menu-item-group>
+            <template slot="title">管理员</template>
+            <el-menu-item index="/admin_users/list">管理列表</el-menu-item>
+          </el-menu-item-group>
+        </el-submenu>
+        <!--        <el-submenu index="3">-->
+        <!--          <template slot="title">-->
+        <!--            <i class="el-icon-message"></i>运营管理-->
+        <!--          </template>-->
+        <!--          <el-menu-item-group>-->
+        <!--            <template slot="title">管理员</template>-->
+        <!--            <el-menu-item index="/admin_users/list">管理列表</el-menu-item>-->
+        <!--          </el-menu-item-group>-->
+        <!--        </el-submenu>-->
       </el-menu>
     </el-aside>
     <el-container>
@@ -40,10 +58,13 @@ export default {
   data() {
     return {};
   },
+  mounted() {
+    console.log(this.$route.path);
+  },
 };
 </script>
 
-<style>
+<style scoped>
 .el-header {
   background-color: #b3c0d1;
   color: #333;

@@ -34,6 +34,11 @@ const routes = [
         name: "CategoriesAds",
         component: () => import("../views/CategoriesAds/index.vue"),
       },
+      {
+        path: "/admin_users/list",
+        name: "AdminUsers",
+        component: () => import("../views/AdminUsers/index.vue"),
+      },
     ],
   },
 ];

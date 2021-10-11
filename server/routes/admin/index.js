@@ -70,4 +70,34 @@ module.exports = app =>{
         file.url = `http://localhost:3000/uploads/${file.filename}`
         res.send(file)
     })
+
+    // 登录接口
+    app.post('/admin/api/login', async (req, res) => {
+        const { username, password } = req.body
+        // 1.根据用户名找用户
+        const AdminUser = require('../../models/AdminUser')
+        const user = await AdminUser.findOne({
+            username:username // 也可以简写
+        }).select('+password')
+        // 默认不取密码，写个加号，取出来，不然验证的时候拿不到
+        if(!user){
+            return res.status(422).send({
+                message: '用户不存在'
+            })
+        }
+
+        // 2.校验密码
+        const isValid = require('bcryptjs').compareSync(password, user.password)
+        if(!isValid){
+            return res.status(422).send({
+                message: '密码错误！'
+            })
+        }
+        // 3.返回token
+        const jwt = require('jsonwebtoken')
+        // 如果有一个值，证明在获取get
+        const token = jwt.sign({id: user._id}, app.get('secret'))
+        // username: username  用户名都是我们拿到id获取出来的  ，这里可以加任何数据
+        res.send(token)
+    })
 }

@@ -8,7 +8,7 @@
       <el-table :data="items" class="flex1">
         <el-table-column prop="_id" label="ID"></el-table-column>
         <el-table-column prop="username" label="用户名"></el-table-column>
-        <!--        <el-table-column prop="password" label="密码"></el-table-column>-->
+        <!--                <el-table-column prop="password" label="密码"></el-table-column>-->
         <el-table-column label="操作">
           <template slot-scope="scope">
             <el-button @click="handleClick(scope.row)" type="text" size="small"
@@ -35,7 +35,11 @@
             :label-width="formLabelWidth"
             prop="password"
           >
-            <el-input v-model="addForm.password" autocomplete="off"></el-input>
+            <el-input
+              v-model="addForm.password"
+              type="password"
+              autocomplete="off"
+            ></el-input>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -58,7 +62,11 @@
             :label-width="formLabelWidth"
             prop="password"
           >
-            <el-input v-model="editForm.password" autocomplete="off"></el-input>
+            <el-input
+              v-model="editForm.password"
+              type="password"
+              autocomplete="off"
+            ></el-input>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">

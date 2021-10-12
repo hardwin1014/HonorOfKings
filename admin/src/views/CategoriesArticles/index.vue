@@ -1,19 +1,19 @@
 <template>
   <div id="categoriesList">
     <el-card class="box-card">
-      <el-button type="success" @click="openAddDialog" class="addBtn"
+      <el-button type="success" class="addBtn" @click="openAddDialog"
         >新建文章</el-button
       >
       <h1>文章列表</h1>
       <el-table :data="items" class="flex1">
-        <el-table-column prop="_id" label="ID"></el-table-column>
-        <el-table-column prop="title" label="标题"></el-table-column>
+        <el-table-column prop="_id" label="ID" />
+        <el-table-column prop="title" label="标题" />
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button @click="handleClick(scope.row)" type="text" size="small"
+            <el-button type="text" size="small" @click="handleClick(scope.row)"
               >编辑</el-button
             >
-            <el-button @click="delClick(scope.row)" type="text" size="small"
+            <el-button type="text" size="small" @click="delClick(scope.row)"
               >删除</el-button
             >
           </template>
@@ -21,7 +21,7 @@
       </el-table>
       <!--    新增文章-->
       <el-dialog title="新增文章" :visible.sync="addDialogFormVisible">
-        <el-form :model="addForm" ref="ruleAddForm">
+        <el-form ref="ruleAddForm" :model="addForm">
           <el-form-item
             label="所属分类"
             :label-width="formLabelWidth"
@@ -38,19 +38,18 @@
                 :key="item._id"
                 :label="item.name"
                 :value="item._id"
-              >
-              </el-option>
+              />
             </el-select>
           </el-form-item>
           <el-form-item label="标题" :label-width="formLabelWidth" prop="title">
-            <el-input v-model="addForm.title" autocomplete="off"></el-input>
+            <el-input v-model="addForm.title" autocomplete="off" />
           </el-form-item>
           <el-form-item label="详情" :label-width="formLabelWidth" prop="body">
             <vue-editor
               v-model="addForm.body"
-              useCustomImageHandler
+              use-custom-image-handler
               @image-added="handleImageAdded"
-            ></vue-editor>
+            />
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -60,7 +59,7 @@
       </el-dialog>
       <!--    编辑文章-->
       <el-dialog title="修改文章" :visible.sync="editDialogFormVisible">
-        <el-form :model="editForm" ref="ruleEditForm">
+        <el-form ref="ruleEditForm" :model="editForm">
           <el-form-item
             label="所属分类"
             :label-width="formLabelWidth"
@@ -77,19 +76,18 @@
                 :key="item._id"
                 :label="item.name"
                 :value="item._id"
-              >
-              </el-option>
+              />
             </el-select>
           </el-form-item>
           <el-form-item label="标题" :label-width="formLabelWidth" prop="title">
-            <el-input v-model="editForm.title" autocomplete="off"></el-input>
+            <el-input v-model="editForm.title" autocomplete="off" />
           </el-form-item>
           <el-form-item label="详情" :label-width="formLabelWidth" prop="body">
             <vue-editor
               v-model="editForm.body"
-              useCustomImageHandler
+              use-custom-image-handler
               @image-added="handleImageAdded"
-            ></vue-editor>
+            />
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">

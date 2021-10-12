@@ -1,20 +1,20 @@
 <template>
   <div id="categoriesList">
     <el-card class="box-card">
-      <el-button type="success" @click="openAddDialog" class="addBtn"
+      <el-button type="success" class="addBtn" @click="openAddDialog"
         >新增管理员</el-button
       >
       <h1>管理员列表</h1>
       <el-table :data="items" class="flex1">
-        <el-table-column prop="_id" label="ID"></el-table-column>
-        <el-table-column prop="username" label="用户名"></el-table-column>
+        <el-table-column prop="_id" label="ID" />
+        <el-table-column prop="username" label="用户名" />
         <!--                <el-table-column prop="password" label="密码"></el-table-column>-->
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button @click="handleClick(scope.row)" type="text" size="small"
+            <el-button type="text" size="small" @click="handleClick(scope.row)"
               >编辑</el-button
             >
-            <el-button @click="delClick(scope.row)" type="text" size="small"
+            <el-button type="text" size="small" @click="delClick(scope.row)"
               >删除</el-button
             >
           </template>
@@ -22,13 +22,13 @@
       </el-table>
       <!--    新增管理员-->
       <el-dialog title="新增管理员" :visible.sync="addDialogFormVisible">
-        <el-form :model="addForm" ref="ruleAddForm">
+        <el-form ref="ruleAddForm" :model="addForm">
           <el-form-item
             label="管理员名称"
             :label-width="formLabelWidth"
             prop="username"
           >
-            <el-input v-model="addForm.username" autocomplete="off"></el-input>
+            <el-input v-model="addForm.username" autocomplete="off" />
           </el-form-item>
           <el-form-item
             label="密码"
@@ -39,7 +39,7 @@
               v-model="addForm.password"
               type="password"
               autocomplete="off"
-            ></el-input>
+            />
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -49,13 +49,13 @@
       </el-dialog>
       <!--    编辑管理员-->
       <el-dialog title="修改管理员" :visible.sync="editDialogFormVisible">
-        <el-form :model="editForm" ref="ruleEditForm">
+        <el-form ref="ruleEditForm" :model="editForm">
           <el-form-item
             label="管理员名称"
             :label-width="formLabelWidth"
             prop="username"
           >
-            <el-input v-model="editForm.username" autocomplete="off"></el-input>
+            <el-input v-model="editForm.username" autocomplete="off" />
           </el-form-item>
           <el-form-item
             label="密码"
@@ -66,7 +66,7 @@
               v-model="editForm.password"
               type="password"
               autocomplete="off"
-            ></el-input>
+            />
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -87,7 +87,7 @@ import {
   editCategories,
 } from "api/categories";
 export default {
-  name: "Admin_users",
+  name: "AdminUsers",
   data() {
     return {
       items: [],
@@ -131,7 +131,7 @@ export default {
     },
     async fetch() {
       const res = await categoriesList(this.adminURL);
-      this.items = JSON.parse(res.data);
+      this.items = res.data
     },
     async handleClick(row) {
       this.editDialogFormVisible = true;
@@ -152,6 +152,8 @@ export default {
       })
         .then(async () => {
           const res = await delCategory(row._id, this.adminURL);
+          console.log(res)
+          debugger
           if (!JSON.parse(res.data).success) return;
           await this.fetch();
           this.$message.success("删除成功！");

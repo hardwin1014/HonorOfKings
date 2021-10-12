@@ -1,19 +1,19 @@
 <template>
   <div id="categoriesList">
     <el-card class="box-card">
-      <el-button type="success" @click="openAddDialog" class="addBtn"
+      <el-button type="success" class="addBtn" @click="openAddDialog"
         >新增广告位</el-button
       >
       <h1>广告位列表</h1>
       <el-table :data="items" class="flex1">
-        <el-table-column prop="_id" label="ID"></el-table-column>
-        <el-table-column prop="name" label="广告位名称"></el-table-column>
+        <el-table-column prop="_id" label="ID" />
+        <el-table-column prop="name" label="广告位名称" />
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button @click="handleClick(scope.row)" type="text" size="small"
+            <el-button type="text" size="small" @click="handleClick(scope.row)"
               >编辑</el-button
             >
-            <el-button @click="delClick(scope.row)" type="text" size="small"
+            <el-button type="text" size="small" @click="delClick(scope.row)"
               >删除</el-button
             >
           </template>
@@ -21,20 +21,20 @@
       </el-table>
       <!--    新增广告位-->
       <el-dialog title="新增广告位" :visible.sync="addDialogFormVisible">
-        <el-form :model="addForm" ref="ruleAddForm">
+        <el-form ref="ruleAddForm" :model="addForm">
           <el-form-item
             label="广告名称"
             :label-width="formLabelWidth"
             prop="name"
           >
-            <el-input v-model="addForm.name" autocomplete="off"></el-input>
+            <el-input v-model="addForm.name" autocomplete="off" />
           </el-form-item>
           <el-form-item label="广告" :label-width="formLabelWidth" prop="items">
             <el-button
-              @click="addForm.items.push({})"
               style="margin-bottom: 20px"
               size="small"
-              ><i class="el-icon-plus"></i>添加广告</el-button
+              @click="addForm.items.push({})"
+              ><i class="el-icon-plus" />添加广告</el-button
             >
             <el-row
               type="flex"
@@ -45,17 +45,17 @@
               "
             >
               <el-col
-                :md="14"
-                style="width: 45%; margin-bottom: 20px"
                 v-for="(item, i) in addForm.items"
                 :key="i"
+                :md="14"
+                style="width: 45%; margin-bottom: 20px"
               >
                 <el-form-item
                   label="URL"
                   class="flex2"
                   style="margin-bottom: 20px"
                 >
-                  <el-input v-model="item.url"></el-input>
+                  <el-input v-model="item.url" />
                 </el-form-item>
                 <el-form-item label="图标">
                   <el-upload
@@ -65,7 +65,7 @@
                     :on-success="(res) => $set(item, 'image', res.url)"
                   >
                     <img v-if="item.image" :src="item.image" class="avatar" />
-                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                    <i v-else class="el-icon-plus avatar-uploader-icon" />
                   </el-upload>
                 </el-form-item>
                 <el-form-item class="flex2">
@@ -87,20 +87,20 @@
       </el-dialog>
       <!--    编辑广告位-->
       <el-dialog title="修改广告位" :visible.sync="editDialogFormVisible">
-        <el-form :model="editForm" ref="ruleEditForm">
+        <el-form ref="ruleEditForm" :model="editForm">
           <el-form-item
             label="广告位名称"
             :label-width="formLabelWidth"
             prop="name"
           >
-            <el-input v-model="editForm.name" autocomplete="off"></el-input>
+            <el-input v-model="editForm.name" autocomplete="off" />
           </el-form-item>
           <el-form-item label="广告" :label-width="formLabelWidth" prop="items">
             <el-button
-              @click="editForm.items.push({})"
               style="margin-bottom: 20px"
               size="small"
-              ><i class="el-icon-plus"></i>添加广告</el-button
+              @click="editForm.items.push({})"
+              ><i class="el-icon-plus" />添加广告</el-button
             >
             <el-row
               type="flex"
@@ -111,17 +111,17 @@
               "
             >
               <el-col
-                :md="14"
-                style="width: 45%; margin-bottom: 20px"
                 v-for="(item, i) in editForm.items"
                 :key="i"
+                :md="14"
+                style="width: 45%; margin-bottom: 20px"
               >
                 <el-form-item
                   label="URL"
                   class="flex2"
                   style="margin-bottom: 20px"
                 >
-                  <el-input v-model="item.url"></el-input>
+                  <el-input v-model="item.url" />
                 </el-form-item>
                 <el-form-item label="图标">
                   <el-upload
@@ -131,7 +131,7 @@
                     :on-success="(res) => $set(item, 'image', res.url)"
                   >
                     <img v-if="item.image" :src="item.image" class="avatar" />
-                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                    <i v-else class="el-icon-plus avatar-uploader-icon" />
                   </el-upload>
                 </el-form-item>
                 <el-form-item class="flex2">
@@ -201,12 +201,13 @@ export default {
     },
     async fetch() {
       const res = await categoriesList(this.adsURL);
-      this.items = JSON.parse(res.data);
+      this.items = res.data
+      console.log(res)
     },
     async handleClick(row) {
       this.editDialogFormVisible = true;
       const res = await categoryDetail(row._id, this.adsURL);
-      this.editId = JSON.parse(res.data)._id;
+      this.editId = res.data._id;
       this.editForm = Object.assign({}, this.editForm, JSON.parse(res.data));
     },
     async editCategory() {
@@ -222,7 +223,7 @@ export default {
       })
         .then(async () => {
           const res = await delCategory(row._id, this.adsURL);
-          if (!JSON.parse(res.data).success) return;
+          if (!res.data.success) return;
           await this.fetch();
           this.$message.success("删除成功！");
         })

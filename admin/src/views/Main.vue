@@ -3,7 +3,7 @@
     <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
       <el-menu unique-opened :default-active="$route.path" router>
         <el-submenu index="1">
-          <template slot="title"><i class="el-icon-box"></i>内容管理</template>
+          <template slot="title"><i class="el-icon-box" />内容管理</template>
           <el-menu-item-group>
             <template slot="title">分类</template>
             <el-menu-item index="/categories/list">分类操作</el-menu-item>
@@ -27,7 +27,7 @@
         </el-submenu>
         <el-submenu index="2">
           <template slot="title">
-            <i class="el-icon-message"></i>运营管理
+            <i class="el-icon-message" />运营管理
           </template>
           <el-menu-item-group>
             <template slot="title">管理员</template>
@@ -36,7 +36,7 @@
         </el-submenu>
         <el-submenu index="3">
           <template slot="title">
-            <i class="el-icon-s-tools"></i>系统设置
+            <i class="el-icon-s-tools" />系统设置
           </template>
           <el-menu-item-group>
             <!--<template slot="title">管理员</template>-->
@@ -47,7 +47,7 @@
     </el-aside>
     <el-container>
       <el-main>
-        <router-view></router-view>
+        <router-view />
       </el-main>
     </el-container>
   </el-container>

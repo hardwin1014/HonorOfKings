@@ -5,15 +5,15 @@
       <el-form :model="loginModel" class="form">
         <el-form-item label="name" class="form-item">
           <input
-            v-model="loginModel.name"
+            v-model="loginModel.username"
             class="input"
             placeholder="username"
           />
         </el-form-item>
         <el-form-item label="password" class="form-item">
           <input
-            class="input"
             v-model="loginModel.password"
+            class="input"
             type="password"
             placeholder="password"
           />
@@ -27,12 +27,12 @@
 <script>
 import { login } from "api/login";
 export default {
-  name: "index",
+  name: "Index",
   data() {
     return {
       labelPosition: "right",
       loginModel: {
-        name: "",
+        username: "",
         password: "",
       },
     };
@@ -40,8 +40,11 @@ export default {
   methods: {
     async loginBtn() {
       const res = await login(this.loginModel);
-      console.log(JSON.parse(res.data));
-      localStorage.token = JSON.parse(res.data).token;
+      localStorage.token = res.data.token; // token 包含加密的ID
+      // sessionStorage.token = JSON.parse(res.data).token; 会话结束就没了
+      // 一般放cookie里面
+      await this.$router.push("/");
+      this.$message.success("login success！");
     },
   },
 };

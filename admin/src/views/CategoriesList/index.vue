@@ -1,20 +1,20 @@
 <template>
   <div id="categoriesList">
     <el-card class="box-card">
-      <el-button type="success" @click="openAddDialog" class="addBtn"
+      <el-button type="success" class="addBtn" @click="openAddDialog"
         >新增分类</el-button
       >
       <h1>分类列表</h1>
       <el-table :data="items" class="flex1">
-        <el-table-column prop="_id" label="ID"></el-table-column>
-        <el-table-column prop="parent.name" label="上级分类"></el-table-column>
-        <el-table-column prop="name" label="分类名称"></el-table-column>
+        <el-table-column prop="_id" label="ID" />
+        <el-table-column prop="parent.name" label="上级分类" />
+        <el-table-column prop="name" label="分类名称" />
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button @click="handleClick(scope.row)" type="text" size="small"
+            <el-button type="text" size="small" @click="handleClick(scope.row)"
               >编辑</el-button
             >
-            <el-button @click="delClick(scope.row)" type="text" size="small"
+            <el-button type="text" size="small" @click="delClick(scope.row)"
               >删除</el-button
             >
           </template>
@@ -22,7 +22,7 @@
       </el-table>
       <!--    新增分类-->
       <el-dialog title="新增分类" :visible.sync="addDialogFormVisible">
-        <el-form :model="addForm" ref="ruleAddForm">
+        <el-form ref="ruleAddForm" :model="addForm">
           <el-form-item label="上级分类" :label-width="formLabelWidth">
             <el-select v-model="addForm.parent" style="width: 100%">
               <el-option
@@ -30,8 +30,7 @@
                 :key="item._id"
                 :label="item.name"
                 :value="item._id"
-              >
-              </el-option>
+              />
             </el-select>
           </el-form-item>
           <el-form-item
@@ -39,7 +38,7 @@
             :label-width="formLabelWidth"
             prop="name"
           >
-            <el-input v-model="addForm.name" autocomplete="off"></el-input>
+            <el-input v-model="addForm.name" autocomplete="off" />
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -49,7 +48,7 @@
       </el-dialog>
       <!--    编辑分类-->
       <el-dialog title="修改分类" :visible.sync="editDialogFormVisible">
-        <el-form :model="editForm" ref="ruleEditForm">
+        <el-form ref="ruleEditForm" :model="editForm">
           <el-form-item label="上级分类" :label-width="formLabelWidth">
             <el-select v-model="editForm.parent" style="width: 100%">
               <el-option
@@ -57,8 +56,7 @@
                 :key="item._id"
                 :label="item.name"
                 :value="item._id"
-              >
-              </el-option>
+              />
             </el-select>
           </el-form-item>
           <el-form-item
@@ -66,7 +64,7 @@
             :label-width="formLabelWidth"
             prop="name"
           >
-            <el-input v-model="editForm.name" autocomplete="off"></el-input>
+            <el-input v-model="editForm.name" autocomplete="off" />
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">

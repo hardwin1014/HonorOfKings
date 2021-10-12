@@ -1,13 +1,13 @@
 <template>
   <div id="categoriesList">
     <el-card class="box-card">
-      <el-button type="success" @click="openAddDialog" class="addBtn"
+      <el-button type="success" class="addBtn" @click="openAddDialog"
         >新增物品</el-button
       >
       <h1>物品列表</h1>
       <el-table :data="items" class="flex1">
-        <el-table-column prop="_id" label="ID"></el-table-column>
-        <el-table-column prop="name" label="物品名称"></el-table-column>
+        <el-table-column prop="_id" label="ID" />
+        <el-table-column prop="name" label="物品名称" />
         <el-table-column prop="icon" label="图标">
           <template slot-scope="scope">
             <img :src="scope.row.icon" style="height: 3em" alt="物品图标" />
@@ -15,10 +15,10 @@
         </el-table-column>
         <el-table-column label="操作" width="180">
           <template slot-scope="scope">
-            <el-button @click="handleClick(scope.row)" type="text" size="small"
+            <el-button type="text" size="small" @click="handleClick(scope.row)"
               >编辑</el-button
             >
-            <el-button @click="delClick(scope.row)" type="text" size="small"
+            <el-button type="text" size="small" @click="delClick(scope.row)"
               >删除</el-button
             >
           </template>
@@ -26,9 +26,9 @@
       </el-table>
       <!--    新增分类-->
       <el-dialog title="新增物品" :visible.sync="addDialogFormVisible">
-        <el-form :model="addForm" ref="addFormRef">
+        <el-form ref="addFormRef" :model="addForm">
           <el-form-item label="名称" :label-width="formLabelWidth">
-            <el-input v-model="addForm.name" autocomplete="off"></el-input>
+            <el-input v-model="addForm.name" autocomplete="off" />
           </el-form-item>
           <el-form-item label="图标" :label-width="formLabelWidth" prop="icon">
             <el-upload
@@ -38,7 +38,7 @@
               :on-success="addUpload"
             >
               <img v-if="addForm.icon" :src="addForm.icon" class="avatar" />
-              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+              <i v-else class="el-icon-plus avatar-uploader-icon" />
             </el-upload>
           </el-form-item>
         </el-form>
@@ -51,7 +51,7 @@
       <el-dialog title="修改物品" :visible.sync="editDialogFormVisible">
         <el-form :model="editForm">
           <el-form-item label="名称" :label-width="formLabelWidth" prop="name">
-            <el-input v-model="editForm.name" autocomplete="off"></el-input>
+            <el-input v-model="editForm.name" autocomplete="off" />
           </el-form-item>
           <el-form-item label="icon" :label-width="formLabelWidth" prop="icon">
             <el-upload
@@ -61,7 +61,7 @@
               :on-success="editUpload"
             >
               <img v-if="editForm.icon" :src="editForm.icon" class="avatar" />
-              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+              <i v-else class="el-icon-plus avatar-uploader-icon" />
             </el-upload>
           </el-form-item>
         </el-form>

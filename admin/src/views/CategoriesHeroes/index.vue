@@ -1,14 +1,14 @@
 <template>
   <div id="categoriesHeroes">
     <el-card class="box-card">
-      <el-button type="success" @click="openAddDialog" class="addBtn"
+      <el-button type="success" class="addBtn" @click="openAddDialog"
         >新增英雄</el-button
       >
       <h1>英雄列表</h1>
       <el-table :data="items" class="flex1">
-        <el-table-column prop="_id" label="ID"></el-table-column>
-        <el-table-column prop="name" label="英雄名称"></el-table-column>
-        <el-table-column prop="title" label="称号"></el-table-column>
+        <el-table-column prop="_id" label="ID" />
+        <el-table-column prop="name" label="英雄名称" />
+        <el-table-column prop="title" label="称号" />
         <el-table-column prop="avatar" label="头像">
           <template slot-scope="scope">
             <img :src="scope.row.avatar" style="height: 3em" alt="英雄头像" />
@@ -16,10 +16,10 @@
         </el-table-column>
         <el-table-column label="操作" width="180">
           <template slot-scope="scope">
-            <el-button @click="handleClick(scope.row)" type="text" size="small"
+            <el-button type="text" size="small" @click="handleClick(scope.row)"
               >编辑</el-button
             >
-            <el-button @click="delClick(scope.row)" type="text" size="small"
+            <el-button type="text" size="small" @click="delClick(scope.row)"
               >删除</el-button
             >
           </template>
@@ -31,7 +31,7 @@
         style="min-width: 1440px; width: 100%; height: 100vh"
         :visible.sync="addDialogFormVisible"
       >
-        <el-form :model="addForm" ref="addFormRefs">
+        <el-form ref="addFormRefs" :model="addForm">
           <el-tabs value="baseInfo" type="border-card">
             <el-tab-pane label="基础信息" name="baseInfo">
               <el-form-item
@@ -39,14 +39,14 @@
                 :label-width="formLabelWidth"
                 prop="name"
               >
-                <el-input v-model="addForm.name" autocomplete="off"></el-input>
+                <el-input v-model="addForm.name" autocomplete="off" />
               </el-form-item>
               <el-form-item
                 label="称号"
                 :label-width="formLabelWidth"
                 prop="title"
               >
-                <el-input v-model="addForm.title" autocomplete="off"></el-input>
+                <el-input v-model="addForm.title" autocomplete="off" />
               </el-form-item>
               <el-form-item
                 label="头像"
@@ -64,7 +64,7 @@
                     :src="addForm.avatar"
                     class="avatar"
                   />
-                  <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                  <i v-else class="el-icon-plus avatar-uploader-icon" />
                 </el-upload>
               </el-form-item>
               <!--          分类可以多选-->
@@ -80,10 +80,10 @@
                 >
                   <el-option
                     v-for="item of categoriesList"
+                    :key="item._id"
                     :label="item.name"
                     :value="item._id"
-                    :key="item._id"
-                  ></el-option>
+                  />
                 </el-select>
               </el-form-item>
               <el-form-item
@@ -92,12 +92,12 @@
                 prop="scores.difficult"
               >
                 <el-rate
+                  v-model="addForm.scores.difficult"
                   :max="10"
                   show-score
                   style="margin-top: 10px"
-                  v-model="addForm.scores.difficult"
                   autocomplete="off"
-                ></el-rate>
+                />
               </el-form-item>
               <el-form-item
                 label="技能"
@@ -105,12 +105,12 @@
                 prop="scores.skills"
               >
                 <el-rate
+                  v-model="addForm.scores.skills"
                   :max="10"
                   show-score
                   style="margin-top: 10px"
-                  v-model="addForm.scores.skills"
                   autocomplete="off"
-                ></el-rate>
+                />
               </el-form-item>
               <el-form-item
                 label="攻击"
@@ -118,12 +118,12 @@
                 prop="scores.attack"
               >
                 <el-rate
+                  v-model="addForm.scores.attack"
                   :max="10"
                   show-score
                   style="margin-top: 10px"
-                  v-model="addForm.scores.attack"
                   autocomplete="off"
-                ></el-rate>
+                />
               </el-form-item>
               <el-form-item
                 label="生存"
@@ -131,12 +131,12 @@
                 prop="scores.survive"
               >
                 <el-rate
+                  v-model="addForm.scores.survive"
                   :max="10"
                   show-score
                   style="margin-top: 10px"
-                  v-model="addForm.scores.survive"
                   autocomplete="off"
-                ></el-rate>
+                />
               </el-form-item>
               <el-form-item
                 label="顺风出装"
@@ -146,10 +146,10 @@
                 <el-select v-model="addForm.items1" multiple>
                   <el-option
                     v-for="item of equips"
+                    :key="item._id"
                     :label="item.name"
                     :value="item._id"
-                    :key="item._id"
-                  ></el-option>
+                  />
                 </el-select>
               </el-form-item>
               <el-form-item
@@ -160,10 +160,10 @@
                 <el-select v-model="addForm.items2" multiple>
                   <el-option
                     v-for="item of equips"
+                    :key="item._id"
                     :label="item.name"
                     :value="item._id"
-                    :key="item._id"
-                  ></el-option>
+                  />
                 </el-select>
               </el-form-item>
               <el-form-item
@@ -171,38 +171,29 @@
                 :label-width="formLabelWidth"
                 prop="usageTips"
               >
-                <el-input
-                  v-model="addForm.usageTips"
-                  autocomplete="off"
-                ></el-input>
+                <el-input v-model="addForm.usageTips" autocomplete="off" />
               </el-form-item>
               <el-form-item
                 label="对战技巧"
                 :label-width="formLabelWidth"
                 prop="battleTips"
               >
-                <el-input
-                  v-model="addForm.battleTips"
-                  autocomplete="off"
-                ></el-input>
+                <el-input v-model="addForm.battleTips" autocomplete="off" />
               </el-form-item>
               <el-form-item
                 label="团战思路"
                 :label-width="formLabelWidth"
                 prop="teamTips"
               >
-                <el-input
-                  v-model="addForm.teamTips"
-                  autocomplete="off"
-                ></el-input>
+                <el-input v-model="addForm.teamTips" autocomplete="off" />
               </el-form-item>
             </el-tab-pane>
             <el-tab-pane label="技能" name="skills">
               <el-button
-                @click="addForm.skills.push({})"
                 style="margin-bottom: 20px"
                 size="small"
-                ><i class="el-icon-plus"></i>添加技能</el-button
+                @click="addForm.skills.push({})"
+                ><i class="el-icon-plus" />添加技能</el-button
               >
               <el-row
                 type="flex"
@@ -213,13 +204,13 @@
                 "
               >
                 <el-col
-                  :md="12"
-                  style="width: 45%; margin-bottom: 20px"
                   v-for="(item, i) in addForm.skills"
                   :key="i"
+                  :md="12"
+                  style="width: 45%; margin-bottom: 20px"
                 >
                   <el-form-item label="名称" class="flex2" prop="name">
-                    <el-input v-model="item.name"></el-input>
+                    <el-input v-model="item.name" />
                   </el-form-item>
                   <el-form-item label="图标" prop="icon">
                     <el-upload
@@ -229,17 +220,14 @@
                       :on-success="(res) => $set(item, 'icon', res.url)"
                     >
                       <img v-if="item.icon" :src="item.icon" class="avatar" />
-                      <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                      <i v-else class="el-icon-plus avatar-uploader-icon" />
                     </el-upload>
                   </el-form-item>
                   <el-form-item class="flex2" label="描述" prop="description">
-                    <el-input
-                      type="textarea"
-                      v-model="item.description"
-                    ></el-input>
+                    <el-input v-model="item.description" type="textarea" />
                   </el-form-item>
                   <el-form-item class="flex2" label="小提示" prop="tips">
-                    <el-input type="textarea" v-model="item.tips"></el-input>
+                    <el-input v-model="item.tips" type="textarea" />
                   </el-form-item>
                   <el-form-item class="flex2">
                     <el-button
@@ -265,17 +253,14 @@
         style="min-width: 1440px; width: 100%; height: 100vh"
         :visible.sync="editDialogFormVisible"
       >
-        <el-form :model="editForm" ref="editFormRefs">
+        <el-form ref="editFormRefs" :model="editForm">
           <el-tabs type="border-card">
             <el-tab-pane label="基础信息">
               <el-form-item label="名称" :label-width="formLabelWidth">
-                <el-input v-model="editForm.name" autocomplete="off"></el-input>
+                <el-input v-model="editForm.name" autocomplete="off" />
               </el-form-item>
               <el-form-item label="称号" :label-width="formLabelWidth">
-                <el-input
-                  v-model="editForm.title"
-                  autocomplete="off"
-                ></el-input>
+                <el-input v-model="editForm.title" autocomplete="off" />
               </el-form-item>
               <el-form-item
                 label="头像"
@@ -293,7 +278,7 @@
                     :src="editForm.avatar"
                     class="avatar"
                   />
-                  <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                  <i v-else class="el-icon-plus avatar-uploader-icon" />
                 </el-upload>
               </el-form-item>
               <!--分类可以多选-->
@@ -305,93 +290,84 @@
                 >
                   <el-option
                     v-for="item of categoriesList"
+                    :key="item._id"
                     :label="item.name"
                     :value="item._id"
-                    :key="item._id"
-                  ></el-option>
+                  />
                 </el-select>
               </el-form-item>
               <el-form-item label="难度" :label-width="formLabelWidth">
                 <el-rate
+                  v-model="editForm.scores.difficult"
                   :max="10"
                   show-score
                   style="margin-top: 10px"
-                  v-model="editForm.scores.difficult"
                   autocomplete="off"
-                ></el-rate>
+                />
               </el-form-item>
               <el-form-item label="技能" :label-width="formLabelWidth">
                 <el-rate
+                  v-model="editForm.scores.skills"
                   :max="10"
                   show-score
                   style="margin-top: 10px"
-                  v-model="editForm.scores.skills"
                   autocomplete="off"
-                ></el-rate>
+                />
               </el-form-item>
               <el-form-item label="攻击" :label-width="formLabelWidth">
                 <el-rate
+                  v-model="editForm.scores.attack"
                   :max="10"
                   show-score
                   style="margin-top: 10px"
-                  v-model="editForm.scores.attack"
                   autocomplete="off"
-                ></el-rate>
+                />
               </el-form-item>
               <el-form-item label="生存" :label-width="formLabelWidth">
                 <el-rate
+                  v-model="editForm.scores.survive"
                   :max="10"
                   show-score
                   style="margin-top: 10px"
-                  v-model="editForm.scores.survive"
                   autocomplete="off"
-                ></el-rate>
+                />
               </el-form-item>
               <el-form-item label="顺风出装" :label-width="formLabelWidth">
                 <el-select v-model="editForm.items1" multiple>
                   <el-option
                     v-for="item of equips"
+                    :key="item._id"
                     :label="item.name"
                     :value="item._id"
-                    :key="item._id"
-                  ></el-option>
+                  />
                 </el-select>
               </el-form-item>
               <el-form-item label="逆风出装" :label-width="formLabelWidth">
                 <el-select v-model="editForm.items2" multiple>
                   <el-option
                     v-for="item of equips"
+                    :key="item._id"
                     :label="item.name"
                     :value="item._id"
-                    :key="item._id"
-                  ></el-option>
+                  />
                 </el-select>
               </el-form-item>
               <el-form-item label="使用技巧" :label-width="formLabelWidth">
-                <el-input
-                  v-model="editForm.usageTips"
-                  autocomplete="off"
-                ></el-input>
+                <el-input v-model="editForm.usageTips" autocomplete="off" />
               </el-form-item>
               <el-form-item label="对战技巧" :label-width="formLabelWidth">
-                <el-input
-                  v-model="editForm.battleTips"
-                  autocomplete="off"
-                ></el-input>
+                <el-input v-model="editForm.battleTips" autocomplete="off" />
               </el-form-item>
               <el-form-item label="团战思路" :label-width="formLabelWidth">
-                <el-input
-                  v-model="editForm.teamTips"
-                  autocomplete="off"
-                ></el-input>
+                <el-input v-model="editForm.teamTips" autocomplete="off" />
               </el-form-item>
             </el-tab-pane>
             <el-tab-pane label="技能">
               <el-button
-                @click="editForm.skills.push({})"
                 style="margin-bottom: 20px"
                 size="small"
-                ><i class="el-icon-plus"></i>添加技能</el-button
+                @click="editForm.skills.push({})"
+                ><i class="el-icon-plus" />添加技能</el-button
               >
               <el-row
                 type="flex"
@@ -402,13 +378,13 @@
                 "
               >
                 <el-col
-                  :md="12"
-                  style="width: 45%; margin-bottom: 20px"
                   v-for="(item, i) in editForm.skills"
                   :key="i"
+                  :md="12"
+                  style="width: 45%; margin-bottom: 20px"
                 >
                   <el-form-item label="名称" class="flex2">
-                    <el-input v-model="item.name"></el-input>
+                    <el-input v-model="item.name" />
                   </el-form-item>
                   <el-form-item label="图标">
                     <el-upload
@@ -418,17 +394,14 @@
                       :on-success="(res) => $set(item, 'icon', res.url)"
                     >
                       <img v-if="item.icon" :src="item.icon" class="avatar" />
-                      <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                      <i v-else class="el-icon-plus avatar-uploader-icon" />
                     </el-upload>
                   </el-form-item>
                   <el-form-item class="flex2" label="描述">
-                    <el-input
-                      type="textarea"
-                      v-model="item.description"
-                    ></el-input>
+                    <el-input v-model="item.description" type="textarea" />
                   </el-form-item>
                   <el-form-item class="flex2" label="小提示">
-                    <el-input type="textarea" v-model="item.tips"></el-input>
+                    <el-input v-model="item.tips" type="textarea" />
                   </el-form-item>
                   <el-form-item class="flex2">
                     <el-button

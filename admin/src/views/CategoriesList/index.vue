@@ -133,13 +133,13 @@ export default {
     },
     async fetch() {
       const res = await categoriesList(this.categoriesURL);
-      this.items = JSON.parse(res.data);
+      this.items = res.data;
     },
     async handleClick(row) {
       this.editDialogFormVisible = true;
       const res = await categoryDetail(row._id, this.categoriesURL);
-      this.editId = JSON.parse(res.data)._id;
-      this.editForm.name = JSON.parse(res.data).name;
+      this.editId = res.data._id;
+      this.editForm.name = res.data.name;
     },
     async editCategory() {
       this.editDialogFormVisible = false;
@@ -154,7 +154,7 @@ export default {
       })
         .then(async () => {
           const res = await delCategory(row._id, this.categoriesURL);
-          if (!JSON.parse(res.data).success) return;
+          if (!res.data.success) return;
           await this.fetch();
           this.$message.success("删除成功！");
         })
@@ -162,7 +162,7 @@ export default {
     },
     async fetchParentOptions() {
       const res = await categoriesList(this.categoriesURL);
-      this.parentOptions = JSON.parse(res.data);
+      this.parentOptions = res.data;
     },
   },
 };

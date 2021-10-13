@@ -155,13 +155,13 @@ export default {
     },
     async fetch() {
       const res = await categoriesList(this.articlesURL);
-      this.items = JSON.parse(res.data);
+      this.items = res.data;
     },
     async handleClick(row) {
       this.editDialogFormVisible = true;
       const res = await categoryDetail(row._id, this.articlesURL);
-      this.editId = JSON.parse(res.data)._id;
-      this.editForm = Object.assign({}, this.editForm, JSON.parse(res.data));
+      this.editId = res.data._id;
+      this.editForm = Object.assign({}, this.editForm, res.data);
     },
     async editCategory() {
       this.editDialogFormVisible = false;
@@ -176,7 +176,7 @@ export default {
       })
         .then(async () => {
           const res = await delCategory(row._id, this.articlesURL);
-          if (!JSON.parse(res.data).success) return;
+          if (!res.data.success) return;
           await this.fetch();
           this.$message.success("删除成功！");
         })
@@ -185,7 +185,7 @@ export default {
     // 获取所属分类的数据
     async fetchCategories() {
       const res = await categoriesList(this.categoriesURL);
-      this.categories = JSON.parse(res.data);
+      this.categories = res.data;
     },
     // vue2-editor的方法
     async handleImageAdded(file, Editor, cursorLocation, resetUploader) {
@@ -193,7 +193,7 @@ export default {
       formData.append("file", file);
       const res = await uploadPic(formData);
       // 光标位置插入一张图片,地址
-      Editor.insertEmbed(cursorLocation, "image", JSON.parse(res.data).url);
+      Editor.insertEmbed(cursorLocation, "image", res.data.url);
       resetUploader(); // 重置上传的东西
     },
   },

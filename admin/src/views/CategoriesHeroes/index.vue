@@ -510,15 +510,15 @@ export default {
     async fetch() {
       const res = await categoriesList(this.heroesUrl);
       // 合并两个对象，不会完全合并
-      this.items = JSON.parse(res.data);
+      this.items = res.data;
     },
     async fetchCategories() {
       const res = await categoriesList(this.categoryUrl);
-      this.categoriesList = JSON.parse(res.data);
+      this.categoriesList = res.data;
     },
     async fetchEquips() {
       const res = await categoriesList(this.itemsUrl);
-      this.equips = JSON.parse(res.data);
+      this.equips = res.data;
     },
     async handleClick(row) {
       this.editDialogFormVisible = true;
@@ -532,7 +532,7 @@ export default {
       })
         .then(async () => {
           const res = await delCategory(row._id, this.heroesUrl);
-          if (!JSON.parse(res.data).success) return;
+          if (!res.data.success) return;
           await this.fetch();
           this.$message.success("删除成功！");
         })

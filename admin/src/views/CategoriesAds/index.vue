@@ -202,13 +202,12 @@ export default {
     async fetch() {
       const res = await categoriesList(this.adsURL);
       this.items = res.data
-      console.log(res)
     },
     async handleClick(row) {
       this.editDialogFormVisible = true;
       const res = await categoryDetail(row._id, this.adsURL);
       this.editId = res.data._id;
-      this.editForm = Object.assign({}, this.editForm, JSON.parse(res.data));
+      this.editForm = Object.assign({}, this.editForm, res.data);
     },
     async editCategory() {
       this.editDialogFormVisible = false;

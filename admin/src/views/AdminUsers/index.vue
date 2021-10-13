@@ -136,8 +136,8 @@ export default {
     async handleClick(row) {
       this.editDialogFormVisible = true;
       const res = await categoryDetail(row._id, this.adminURL);
-      this.editId = JSON.parse(res.data)._id;
-      this.editForm = Object.assign({}, this.editForm, JSON.parse(res.data));
+      this.editId = res.data._id;
+      this.editForm = Object.assign({}, this.editForm, res.data);
     },
     async editCategory() {
       this.editDialogFormVisible = false;
@@ -152,9 +152,7 @@ export default {
       })
         .then(async () => {
           const res = await delCategory(row._id, this.adminURL);
-          console.log(res)
-          debugger
-          if (!JSON.parse(res.data).success) return;
+          if (!res.data.success) return;
           await this.fetch();
           this.$message.success("删除成功！");
         })

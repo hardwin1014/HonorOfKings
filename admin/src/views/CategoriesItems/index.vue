@@ -121,7 +121,7 @@ export default {
     },
     async fetch() {
       const res = await categoriesList(this.itemsUrl);
-      this.items = JSON.parse(res.data);
+      this.items = res.data;
     },
     async handleClick(row) {
       this.editDialogFormVisible = true;
@@ -137,7 +137,7 @@ export default {
       })
         .then(async () => {
           const res = await delCategory(row._id, this.itemsUrl);
-          if (!JSON.parse(res.data).success) return;
+          if (!res.data.success) return;
           await this.fetch();
           this.$message.success("删除成功！");
         })

@@ -15,8 +15,6 @@ module.exports = app => {
     const  authMiddleware = require('../../middleware/auth')
     const resourceMiddleware = require('../../middleware/resource')
 
-
-    // 分类接口操作
     // 增
     router.post('/',  authMiddleware(), async (req, res) => {
       const model = await req.Model.create(req.body)
@@ -30,8 +28,7 @@ module.exports = app => {
         res.send(model)
     })
 
-    // 分类列表
-    // 添加中间件
+    // 列表
     router.get('/', authMiddleware(), async (req, res) => {
         const queryOptions = {};
         if (req.Model.modelName === 'Category') {
@@ -48,7 +45,7 @@ module.exports = app => {
         res.send(model)
     })
 
-    // 删除分类
+    // 删除
     router.delete('/:id',  authMiddleware(), async (req, res) => {
         await req.Model.findByIdAndDelete(req.params.id,req.body)
         res.send({
@@ -60,7 +57,6 @@ module.exports = app => {
     app.use('/admin/api/rest/:resource', authMiddleware(), resourceMiddleware(), router)
 
 
-    // 设置中间件
     // 上传图片
     // 使用一个专门处理上传文件的中间件，express无法处理上传的数据  multer
     const multer = require('multer')
@@ -79,21 +75,10 @@ module.exports = app => {
         // 1.根据用户名找用户
         const user = await AdminUser.findOne({username}).select('+password')
         // 默认不取密码，写个加号，取出来，不然验证的时候拿不到
-        // if(!user){
-        //     return res.status(422).send({
-        //         message: '用户不存在'
-        //     })
-        // }
         assert(user, 422, '用户不存在')
-
 
         // 2.校验密码
         const isValid = require('bcryptjs').compareSync(password, user.password)
-        // if(!isValid){
-        //     return res.status(422).send({
-        //         message: '密码错误！'
-        //     })
-        // }
         assert(isValid, 422, '密码错误！')
 
         // 3.返回token

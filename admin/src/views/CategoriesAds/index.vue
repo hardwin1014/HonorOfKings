@@ -20,7 +20,7 @@
         </el-table-column>
       </el-table>
       <!--    新增广告位-->
-      <el-dialog title="新增广告位" :visible.sync="addDialogFormVisible">
+      <el-dialog title="新增广告位" class="dialog" :visible.sync="addDialogFormVisible">
         <el-form ref="ruleAddForm" :model="addForm">
           <el-form-item
             label="广告名称"
@@ -60,7 +60,8 @@
                 <el-form-item label="图标">
                   <el-upload
                     class="avatar-uploader"
-                    action="http://127.0.0.1:3000/admin/api/upload"
+                    :action="uploadUrl"
+                    :headers="getAuthHeaders()"
                     :show-file-list="false"
                     :on-success="(res) => $set(item, 'image', res.url)"
                   >
@@ -86,7 +87,7 @@
         </div>
       </el-dialog>
       <!--    编辑广告位-->
-      <el-dialog title="修改广告位" :visible.sync="editDialogFormVisible">
+      <el-dialog title="修改广告位" class="dialog" :visible.sync="editDialogFormVisible">
         <el-form ref="ruleEditForm" :model="editForm">
           <el-form-item
             label="广告位名称"
@@ -126,8 +127,9 @@
                 <el-form-item label="图标">
                   <el-upload
                     class="avatar-uploader"
-                    action="http://127.0.0.1:3000/admin/api/upload"
+                    :action="uploadUrl"
                     :show-file-list="false"
+                    :headers="getAuthHeaders()"
                     :on-success="(res) => $set(item, 'image', res.url)"
                   >
                     <img v-if="item.image" :src="item.image" class="avatar" />
@@ -234,5 +236,8 @@ export default {
 <style scoped>
 .addBtn {
   margin: 0 0 20px 0;
+}
+.dialog{
+  min-width: 800px!important;
 }
 </style>

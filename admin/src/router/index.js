@@ -7,6 +7,7 @@ const routes = [
   {
     path: "/login",
     name: "Login",
+    meta: { isPublic: true },
     component: () => import("../views/Login/index.vue"),
   },
   {
@@ -48,10 +49,18 @@ const routes = [
   },
 ];
 
+// 设置路由为history模式
 const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  if (!to.meta.isPublic && !localStorage.token) {
+    return next("/login");
+  }
+  next();
 });
 
 export default router;

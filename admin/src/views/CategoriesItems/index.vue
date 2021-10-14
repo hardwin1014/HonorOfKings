@@ -33,7 +33,8 @@
           <el-form-item label="图标" :label-width="formLabelWidth" prop="icon">
             <el-upload
               class="avatar-uploader"
-              action="http://127.0.0.1:3000/admin/api/upload"
+              :action="uploadUrl"
+              :headers="getAuthHeaders()"
               :show-file-list="false"
               :on-success="addUpload"
             >
@@ -56,8 +57,9 @@
           <el-form-item label="icon" :label-width="formLabelWidth" prop="icon">
             <el-upload
               class="avatar-uploader"
-              action="http://127.0.0.1:3000/admin/api/upload"
+              :action="uploadUrl"
               :show-file-list="false"
+              :headers="getAuthHeaders()"
               :on-success="editUpload"
             >
               <img v-if="editForm.icon" :src="editForm.icon" class="avatar" />

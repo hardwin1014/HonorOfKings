@@ -4,23 +4,9 @@ import router from "@/router";
 
 export const request = axios.create({
   baseURL: "http://127.0.0.1:3000/admin/api", // 接口的基本路径
-  // transformResponse 允许自定义原始的响应数据（字符串）
-  // transformResponse: [
-  //   function (data) {
-  //     try {
-  //       // 如果转换成功则返回转换的数据结果
-  //       return data;
-  //     } catch (err) {
-  //       // 如果转换失败，则包装为统一数据格式并返回
-  //       return {
-  //         data,
-  //       };
-  //     }
-  //   },
-  // ],
 });
 
-// 请求拦截器
+// 响应拦截器
 // 拦截上面的响应，前端收到任何错误都会走相应拦截器
 request.interceptors.response.use(
   function (config) {
@@ -40,9 +26,10 @@ request.interceptors.response.use(
   }
 );
 
-// Add a request interceptor
+// 请求拦截器
 request.interceptors.request.use(
   function (config) {
+    // token不能为空, 或者undefined
     if (localStorage.token) {
       // 请求Bearer加空格，规范  前端请求的时候加上的
       config.headers.Authorization = "Bearer " + localStorage.token;

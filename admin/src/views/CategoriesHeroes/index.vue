@@ -55,7 +55,8 @@
               >
                 <el-upload
                   class="avatar-uploader"
-                  action="http://127.0.0.1:3000/admin/api/upload"
+                  :action="uploadUrl"
+                  :headers="getAuthHeaders()"
                   :show-file-list="false"
                   :on-success="addUpload"
                 >
@@ -215,8 +216,9 @@
                   <el-form-item label="图标" prop="icon">
                     <el-upload
                       class="avatar-uploader"
-                      action="http://127.0.0.1:3000/admin/api/upload"
+                      :action="uploadUrl"
                       :show-file-list="false"
+                      :headers="getAuthHeaders()"
                       :on-success="(res) => $set(item, 'icon', res.url)"
                     >
                       <img v-if="item.icon" :src="item.icon" class="avatar" />
@@ -269,8 +271,9 @@
               >
                 <el-upload
                   class="avatar-uploader"
-                  action="http://127.0.0.1:3000/admin/api/upload"
+                  :action="uploadUrl"
                   :show-file-list="false"
+                  :headers="getAuthHeaders()"
                   :on-success="editUpload"
                 >
                   <img
@@ -389,8 +392,9 @@
                   <el-form-item label="图标">
                     <el-upload
                       class="avatar-uploader"
-                      action="http://127.0.0.1:3000/admin/api/upload"
+                      :action="uploadUrl"
                       :show-file-list="false"
+                      :headers="getAuthHeaders()"
                       :on-success="(res) => $set(item, 'icon', res.url)"
                     >
                       <img v-if="item.icon" :src="item.icon" class="avatar" />

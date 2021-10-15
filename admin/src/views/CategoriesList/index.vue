@@ -1,9 +1,11 @@
 <template>
   <div id="categoriesList">
     <el-card class="box-card">
-      <el-button type="success" class="addBtn" @click="openAddDialog"
-        >新增分类</el-button
-      >
+      <el-button
+        type="success"
+        class="addBtn"
+        @click="openAddDialog"
+      >新增分类</el-button>
       <h1>分类列表</h1>
       <el-table :data="items" class="flex1">
         <el-table-column prop="_id" label="ID" />
@@ -11,12 +13,16 @@
         <el-table-column prop="name" label="分类名称" />
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button type="text" size="small" @click="handleClick(scope.row)"
-              >编辑</el-button
-            >
-            <el-button type="text" size="small" @click="delClick(scope.row)"
-              >删除</el-button
-            >
+            <el-button
+              type="text"
+              size="small"
+              @click="handleClick(scope.row)"
+            >编辑</el-button>
+            <el-button
+              type="text"
+              size="small"
+              @click="delClick(scope.row)"
+            >删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -82,90 +88,90 @@ import {
   categoriesList,
   categoryDetail,
   delCategory,
-  editCategories,
-} from "api/categories";
+  editCategories
+} from 'api/categories'
 export default {
-  name: "CategoriesList",
+  name: 'CategoriesList',
   data() {
     return {
       items: [],
       addDialogFormVisible: false,
       editDialogFormVisible: false,
       addForm: {
-        name: "",
-        parent: "",
+        name: '',
+        parent: ''
       },
       editForm: {
-        name: "",
-        parent: "",
+        name: '',
+        parent: ''
       },
-      editId: "",
-      formLabelWidth: "100px",
+      editId: '',
+      formLabelWidth: '100px',
       parentOptions: [],
-      categoriesURL: "categories",
-    };
+      categoriesURL: 'categories'
+    }
   },
   created() {
-    this.fetch();
+    this.fetch()
   },
   mounted() {
-    this.fetchParentOptions();
+    this.fetchParentOptions()
   },
   methods: {
     openAddDialog() {
-      this.addDialogFormVisible = true;
+      this.addDialogFormVisible = true
       this.$nextTick(() => {
-        this.$refs.ruleAddForm.resetFields();
-      });
+        this.$refs.ruleAddForm.resetFields()
+      })
     },
     async addCategory() {
-      this.addDialogFormVisible = false;
-      await this.$refs.ruleAddForm.validate(async (valid) => {
+      this.addDialogFormVisible = false
+      await this.$refs.ruleAddForm.validate(async(valid) => {
         if (valid) {
-          await addCategories(this.addForm, this.categoriesURL);
-          this.$message.success("保存成功！");
-          await this.fetch();
+          await addCategories(this.addForm, this.categoriesURL)
+          this.$message.success('保存成功！')
+          await this.fetch()
         } else {
-          this.$message.warning("请输入分类名称");
-          return false;
+          this.$message.warning('请输入分类名称')
+          return false
         }
-      });
+      })
     },
     async fetch() {
-      const res = await categoriesList(this.categoriesURL);
-      this.items = res.data;
+      const res = await categoriesList(this.categoriesURL)
+      this.items = res.data
     },
     async handleClick(row) {
-      this.editDialogFormVisible = true;
-      const res = await categoryDetail(row._id, this.categoriesURL);
-      this.editId = res.data._id;
-      this.editForm.name = res.data.name;
+      this.editDialogFormVisible = true
+      const res = await categoryDetail(row._id, this.categoriesURL)
+      this.editId = res.data._id
+      this.editForm.name = res.data.name
     },
     async editCategory() {
-      this.editDialogFormVisible = false;
-      await editCategories(this.editId, this.editForm, this.categoriesURL);
-      await this.fetch();
+      this.editDialogFormVisible = false
+      await editCategories(this.editId, this.editForm, this.categoriesURL)
+      await this.fetch()
     },
     delClick(row) {
-      this.$confirm(`是否确定删除分类"${row.name}"?`, "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
+      this.$confirm(`是否确定删除分类"${row.name}"?`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
       })
-        .then(async () => {
-          const res = await delCategory(row._id, this.categoriesURL);
-          if (!res.data.success) return;
-          await this.fetch();
-          this.$message.success("删除成功！");
+        .then(async() => {
+          const res = await delCategory(row._id, this.categoriesURL)
+          if (!res.data.success) return
+          await this.fetch()
+          this.$message.success('删除成功！')
         })
-        .catch((err) => err);
+        .catch((err) => err)
     },
     async fetchParentOptions() {
-      const res = await categoriesList(this.categoriesURL);
-      this.parentOptions = res.data;
-    },
-  },
-};
+      const res = await categoriesList(this.categoriesURL)
+      this.parentOptions = res.data
+    }
+  }
+}
 </script>
 <style scoped>
 .el-dialog {

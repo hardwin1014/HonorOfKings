@@ -1,9 +1,11 @@
 <template>
   <div id="categoriesHeroes">
     <el-card class="box-card">
-      <el-button type="success" class="addBtn" @click="openAddDialog"
-        >新增英雄</el-button
-      >
+      <el-button
+        type="success"
+        class="addBtn"
+        @click="openAddDialog"
+      >新增英雄</el-button>
       <h1>英雄列表</h1>
       <el-table :data="items" class="flex1">
         <el-table-column prop="_id" label="ID" />
@@ -11,17 +13,21 @@
         <el-table-column prop="title" label="称号" />
         <el-table-column prop="avatar" label="头像">
           <template slot-scope="scope">
-            <img :src="scope.row.avatar" style="height: 3em" alt="英雄头像" />
+            <img :src="scope.row.avatar" style="height: 3em" alt="英雄头像">
           </template>
         </el-table-column>
         <el-table-column label="操作" width="180">
           <template slot-scope="scope">
-            <el-button type="text" size="small" @click="handleClick(scope.row)"
-              >编辑</el-button
-            >
-            <el-button type="text" size="small" @click="delClick(scope.row)"
-              >删除</el-button
-            >
+            <el-button
+              type="text"
+              size="small"
+              @click="handleClick(scope.row)"
+            >编辑</el-button>
+            <el-button
+              type="text"
+              size="small"
+              @click="delClick(scope.row)"
+            >删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -64,7 +70,7 @@
                     v-if="addForm.avatar"
                     :src="addForm.avatar"
                     class="avatar"
-                  />
+                  >
                   <i v-else class="el-icon-plus avatar-uploader-icon" />
                 </el-upload>
               </el-form-item>
@@ -194,8 +200,7 @@
                 style="margin-bottom: 20px"
                 size="small"
                 @click="addForm.skills.push({})"
-                ><i class="el-icon-plus" />添加技能</el-button
-              >
+              ><i class="el-icon-plus" />添加技能</el-button>
               <el-row
                 type="flex"
                 style="
@@ -221,7 +226,7 @@
                       :headers="getAuthHeaders()"
                       :on-success="(res) => $set(item, 'icon', res.url)"
                     >
-                      <img v-if="item.icon" :src="item.icon" class="avatar" />
+                      <img v-if="item.icon" :src="item.icon" class="avatar">
                       <i v-else class="el-icon-plus avatar-uploader-icon" />
                     </el-upload>
                   </el-form-item>
@@ -236,8 +241,7 @@
                       type="danger"
                       size="small"
                       @click="addForm.skills.splice(i, 1)"
-                      >删除</el-button
-                    >
+                    >删除</el-button>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -280,7 +284,7 @@
                     v-if="editForm.avatar"
                     :src="editForm.avatar"
                     class="avatar"
-                  />
+                  >
                   <i v-else class="el-icon-plus avatar-uploader-icon" />
                 </el-upload>
               </el-form-item>
@@ -370,8 +374,7 @@
                 style="margin-bottom: 20px"
                 size="small"
                 @click="editForm.skills.push({})"
-                ><i class="el-icon-plus" />添加技能</el-button
-              >
+              ><i class="el-icon-plus" />添加技能</el-button>
               <el-row
                 type="flex"
                 style="
@@ -397,7 +400,7 @@
                       :headers="getAuthHeaders()"
                       :on-success="(res) => $set(item, 'icon', res.url)"
                     >
-                      <img v-if="item.icon" :src="item.icon" class="avatar" />
+                      <img v-if="item.icon" :src="item.icon" class="avatar">
                       <i v-else class="el-icon-plus avatar-uploader-icon" />
                     </el-upload>
                   </el-form-item>
@@ -412,8 +415,7 @@
                       type="danger"
                       size="small"
                       @click="editForm.skills.splice(i, 1)"
-                      >删除</el-button
-                    >
+                    >删除</el-button>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -434,127 +436,127 @@ import {
   addCategories,
   categoriesList,
   delCategory,
-  editCategories,
+  editCategories
   // categoryDetail,
-} from "api/categories";
+} from 'api/categories'
 export default {
-  name: "CategoriesHeroes",
+  name: 'CategoriesHeroes',
   data() {
     return {
       items: [],
       addForm: {
-        name: "",
-        avatar: "",
-        title: "",
-        categories: "",
+        name: '',
+        avatar: '',
+        title: '',
+        categories: '',
         scores: {
           difficult: 0,
           skills: 0,
           attack: 0,
-          survive: 0,
+          survive: 0
         },
         skills: [],
         items1: [],
         items2: [],
-        usageTips: "",
-        battleTips: "",
-        teamTips: "",
-        partners: [],
+        usageTips: '',
+        battleTips: '',
+        teamTips: '',
+        partners: []
       },
       editForm: {
-        name: "",
-        avatar: "",
-        title: "",
-        categories: "",
+        name: '',
+        avatar: '',
+        title: '',
+        categories: '',
         scores: {
           difficult: 0,
           skills: 0,
           attack: 0,
-          survive: 0,
+          survive: 0
         },
         skills: [],
         items1: [],
         items2: [],
-        usageTips: "",
-        battleTips: "",
-        teamTips: "",
-        partners: [],
+        usageTips: '',
+        battleTips: '',
+        teamTips: '',
+        partners: []
       },
-      formLabelWidth: "100px",
+      formLabelWidth: '100px',
       addDialogFormVisible: false,
       editDialogFormVisible: false,
-      heroesUrl: "heroes",
-      categoryUrl: "categories",
-      itemsUrl: "items",
-      editId: "",
+      heroesUrl: 'heroes',
+      categoryUrl: 'categories',
+      itemsUrl: 'items',
+      editId: '',
       categoriesList: [],
-      equips: [],
-    };
+      equips: []
+    }
   },
   created() {
-    this.fetchCategories();
-    this.fetchEquips();
+    this.fetchCategories()
+    this.fetchEquips()
   },
   mounted() {
-    this.fetch();
+    this.fetch()
   },
   methods: {
     openAddDialog() {
-      this.addDialogFormVisible = true;
+      this.addDialogFormVisible = true
       this.$nextTick(() => {
-        this.$refs.addFormRefs.resetFields();
-      });
+        this.$refs.addFormRefs.resetFields()
+      })
     },
     async addCategory() {
-      this.addDialogFormVisible = false;
-      await addCategories(this.addForm, this.heroesUrl);
-      await this.fetch();
-      this.$message.success("保存成功！");
+      this.addDialogFormVisible = false
+      await addCategories(this.addForm, this.heroesUrl)
+      await this.fetch()
+      this.$message.success('保存成功！')
     },
     async fetch() {
-      const res = await categoriesList(this.heroesUrl);
+      const res = await categoriesList(this.heroesUrl)
       // 合并两个对象，不会完全合并
-      this.items = res.data;
+      this.items = res.data
     },
     async fetchCategories() {
-      const res = await categoriesList(this.categoryUrl);
-      this.categoriesList = res.data;
+      const res = await categoriesList(this.categoryUrl)
+      this.categoriesList = res.data
     },
     async fetchEquips() {
-      const res = await categoriesList(this.itemsUrl);
-      this.equips = res.data;
+      const res = await categoriesList(this.itemsUrl)
+      this.equips = res.data
     },
     async handleClick(row) {
-      this.editDialogFormVisible = true;
-      this.editForm = Object.assign({}, this.editForm, row);
+      this.editDialogFormVisible = true
+      this.editForm = Object.assign({}, this.editForm, row)
     },
     delClick(row) {
-      this.$confirm(`是否确定删除分类"${row.name}"?`, "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
+      this.$confirm(`是否确定删除分类"${row.name}"?`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
       })
-        .then(async () => {
-          const res = await delCategory(row._id, this.heroesUrl);
-          if (!res.data.success) return;
-          await this.fetch();
-          this.$message.success("删除成功！");
+        .then(async() => {
+          const res = await delCategory(row._id, this.heroesUrl)
+          if (!res.data.success) return
+          await this.fetch()
+          this.$message.success('删除成功！')
         })
-        .catch((err) => err);
+        .catch((err) => err)
     },
     async editCategory() {
-      this.editDialogFormVisible = false;
-      await editCategories(this.editId, this.editForm, this.heroesUrl);
-      await this.fetch();
+      this.editDialogFormVisible = false
+      await editCategories(this.editId, this.editForm, this.heroesUrl)
+      await this.fetch()
     },
     addUpload(res) {
-      this.addForm.avatar = res.url;
+      this.addForm.avatar = res.url
     },
     editUpload(res) {
-      this.editForm.avatar = res.url;
-    },
-  },
-};
+      this.editForm.avatar = res.url
+    }
+  }
+}
 </script>
 <style scoped>
 .addBtn {

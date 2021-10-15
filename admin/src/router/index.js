@@ -1,66 +1,73 @@
-import Vue from "vue";
-import VueRouter from "vue-router";
+import Vue from 'vue'
+import VueRouter from 'vue-router'
 
-Vue.use(VueRouter);
+Vue.use(VueRouter)
 
 const routes = [
   {
-    path: "/login",
-    name: "Login",
+    path: '/login',
+    name: 'Login',
     meta: { isPublic: true },
-    component: () => import("../views/Login/index.vue"),
+    component: () => import('../views/Login/index.vue')
   },
   {
-    path: "/",
-    name: "Main",
-    component: () => import("../views/Main.vue"),
+    path: '/',
+    name: 'Main',
+    meta: { isPublic: false },
+    component: () => import('../views/Main.vue'),
     children: [
       {
-        path: "/categories/list",
-        name: "CategoriesList",
-        component: () => import("../views/CategoriesList/index.vue"),
+        path: '/categories/list',
+        name: 'CategoriesList',
+        meta: { isPublic: false },
+        component: () => import('../views/CategoriesList/index.vue')
       },
       {
-        path: "/categories/items",
-        name: "CategoriesItems",
-        component: () => import("../views/CategoriesItems/index.vue"),
+        path: '/categories/items',
+        name: 'CategoriesItems',
+        meta: { isPublic: false },
+        component: () => import('../views/CategoriesItems/index.vue')
       },
       {
-        path: "/categories/heroes",
-        name: "CategoriesHeroes",
-        component: () => import("../views/CategoriesHeroes/index.vue"),
+        path: '/categories/heroes',
+        name: 'CategoriesHeroes',
+        meta: { isPublic: false },
+        component: () => import('../views/CategoriesHeroes/index.vue')
       },
       {
-        path: "/categories/articles",
-        name: "CategoriesArticles",
-        component: () => import("../views/CategoriesArticles/index.vue"),
+        path: '/categories/articles',
+        name: 'CategoriesArticles',
+        meta: { isPublic: false },
+        component: () => import('../views/CategoriesArticles/index.vue')
       },
       {
-        path: "/categories/ads",
-        name: "CategoriesAds",
-        component: () => import("../views/CategoriesAds/index.vue"),
+        path: '/categories/ads',
+        name: 'CategoriesAds',
+        meta: { isPublic: false },
+        component: () => import('../views/CategoriesAds/index.vue')
       },
       {
-        path: "/admin_users/list",
-        name: "AdminUsers",
-        component: () => import("../views/AdminUsers/index.vue"),
-      },
-    ],
-  },
-];
+        path: '/admin_users/list',
+        name: 'AdminUsers',
+        meta: { isPublic: false },
+        component: () => import('../views/AdminUsers/index.vue')
+      }
+    ]
+  }
+]
 
 // 设置路由为history模式
 const router = new VueRouter({
-  mode: "history",
+  mode: 'history',
   base: process.env.BASE_URL,
-  routes,
-});
+  routes
+})
 
 router.beforeEach((to, from, next) => {
   if (!to.meta.isPublic && !localStorage.token) {
-    return next("/login");
+    return from.path('/login')
   }
-  next();
-});
+  next()
+})
 
-export default router;
+export default router

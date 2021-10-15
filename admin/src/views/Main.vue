@@ -54,11 +54,11 @@
 </template>
 <script>
 export default {
-  name: "Main",
+  name: 'Main',
   data() {
-    return {};
-  },
-};
+    return {}
+  }
+}
 </script>
 
 <style scoped>

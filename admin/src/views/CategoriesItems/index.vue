@@ -1,26 +1,32 @@
 <template>
   <div id="categoriesList">
     <el-card class="box-card">
-      <el-button type="success" class="addBtn" @click="openAddDialog"
-        >新增物品</el-button
-      >
+      <el-button
+        type="success"
+        class="addBtn"
+        @click="openAddDialog"
+      >新增物品</el-button>
       <h1>物品列表</h1>
       <el-table :data="items" class="flex1">
         <el-table-column prop="_id" label="ID" />
         <el-table-column prop="name" label="物品名称" />
         <el-table-column prop="icon" label="图标">
           <template slot-scope="scope">
-            <img :src="scope.row.icon" style="height: 3em" alt="物品图标" />
+            <img :src="scope.row.icon" style="height: 3em" alt="物品图标">
           </template>
         </el-table-column>
         <el-table-column label="操作" width="180">
           <template slot-scope="scope">
-            <el-button type="text" size="small" @click="handleClick(scope.row)"
-              >编辑</el-button
-            >
-            <el-button type="text" size="small" @click="delClick(scope.row)"
-              >删除</el-button
-            >
+            <el-button
+              type="text"
+              size="small"
+              @click="handleClick(scope.row)"
+            >编辑</el-button>
+            <el-button
+              type="text"
+              size="small"
+              @click="delClick(scope.row)"
+            >删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -38,7 +44,7 @@
               :show-file-list="false"
               :on-success="addUpload"
             >
-              <img v-if="addForm.icon" :src="addForm.icon" class="avatar" />
+              <img v-if="addForm.icon" :src="addForm.icon" class="avatar">
               <i v-else class="el-icon-plus avatar-uploader-icon" />
             </el-upload>
           </el-form-item>
@@ -62,7 +68,7 @@
               :headers="getAuthHeaders()"
               :on-success="editUpload"
             >
-              <img v-if="editForm.icon" :src="editForm.icon" class="avatar" />
+              <img v-if="editForm.icon" :src="editForm.icon" class="avatar">
               <i v-else class="el-icon-plus avatar-uploader-icon" />
             </el-upload>
           </el-form-item>
@@ -81,88 +87,88 @@ import {
   addCategories,
   categoriesList,
   delCategory,
-  editCategories,
+  editCategories
   // categoryDetail,
-} from "api/categories";
+} from 'api/categories'
 export default {
-  name: "CategoriesItems",
+  name: 'CategoriesItems',
   data() {
     return {
       items: [],
       addForm: {
-        name: "",
-        icon: "",
+        name: '',
+        icon: ''
       },
       editForm: {
-        name: "",
-        icon: "",
+        name: '',
+        icon: ''
       },
-      formLabelWidth: "100px",
+      formLabelWidth: '100px',
       addDialogFormVisible: false,
       editDialogFormVisible: false,
-      itemsUrl: "items",
-      editId: "",
-    };
+      itemsUrl: 'items',
+      editId: ''
+    }
   },
   created() {},
   mounted() {
-    this.fetch();
+    this.fetch()
   },
   methods: {
     openAddDialog() {
-      this.addDialogFormVisible = true;
+      this.addDialogFormVisible = true
       this.$nextTick(() => {
-        this.$refs.addFormRef.resetFields();
-      });
+        this.$refs.addFormRef.resetFields()
+      })
     },
     async addCategory() {
-      this.addDialogFormVisible = false;
-      await addCategories(this.addForm, this.itemsUrl);
-      await this.fetch();
-      this.$message.success("保存成功！");
+      this.addDialogFormVisible = false
+      await addCategories(this.addForm, this.itemsUrl)
+      await this.fetch()
+      this.$message.success('保存成功！')
     },
     async fetch() {
-      const res = await categoriesList(this.itemsUrl);
-      this.items = res.data;
+      const res = await categoriesList(this.itemsUrl)
+      this.items = res.data
     },
     async handleClick(row) {
-      this.editDialogFormVisible = true;
-      this.editForm.name = row.name;
-      this.editForm.icon = row.icon;
-      this.editId = row._id;
+      this.editDialogFormVisible = true
+      this.editForm.name = row.name
+      this.editForm.icon = row.icon
+      this.editId = row._id
     },
     delClick(row) {
-      this.$confirm(`是否确定删除分类"${row.name}"?`, "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
+      this.$confirm(`是否确定删除分类"${row.name}"?`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
       })
-        .then(async () => {
-          const res = await delCategory(row._id, this.itemsUrl);
-          if (!res.data.success) return;
-          await this.fetch();
-          this.$message.success("删除成功！");
+        .then(async() => {
+          const res = await delCategory(row._id, this.itemsUrl)
+          if (!res.data.success) return
+          await this.fetch()
+          this.$message.success('删除成功！')
         })
-        .catch((err) => err);
+        .catch((err) => err)
     },
     async editCategory() {
-      this.editDialogFormVisible = false;
-      await editCategories(this.editId, this.editForm, this.itemsUrl);
-      await this.fetch();
+      this.editDialogFormVisible = false
+      await editCategories(this.editId, this.editForm, this.itemsUrl)
+      await this.fetch()
     },
     addUpload(res) {
-      console.log(111);
+      console.log(111)
       // res表示服务端的响应，file是图片信息
       // this.$set(this.model,'icon',res.url)
-      this.addForm.icon = res.url;
+      this.addForm.icon = res.url
     },
     editUpload(res) {
       // res表示服务端的响应，file是图片信息
       // this.$set(this.model,'icon',res.url)
-      this.editForm.icon = res.url;
-    },
-  },
-};
+      this.editForm.icon = res.url
+    }
+  }
+}
 </script>
 <style scoped>
 .el-dialog {

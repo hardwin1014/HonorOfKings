@@ -1,9 +1,11 @@
 <template>
   <div id="categoriesList">
     <el-card class="box-card">
-      <el-button type="success" class="addBtn" @click="openAddDialog"
-        >新增管理员</el-button
-      >
+      <el-button
+        type="success"
+        class="addBtn"
+        @click="openAddDialog"
+      >新增管理员</el-button>
       <h1>管理员列表</h1>
       <el-table :data="items" class="flex1">
         <el-table-column prop="_id" label="ID" />
@@ -11,12 +13,16 @@
         <!--                <el-table-column prop="password" label="密码"></el-table-column>-->
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button type="text" size="small" @click="handleClick(scope.row)"
-              >编辑</el-button
-            >
-            <el-button type="text" size="small" @click="delClick(scope.row)"
-              >删除</el-button
-            >
+            <el-button
+              type="text"
+              size="small"
+              @click="handleClick(scope.row)"
+            >编辑</el-button>
+            <el-button
+              type="text"
+              size="small"
+              @click="delClick(scope.row)"
+            >删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -84,82 +90,82 @@ import {
   categoriesList,
   categoryDetail,
   delCategory,
-  editCategories,
-} from "api/categories";
+  editCategories
+} from 'api/categories'
 export default {
-  name: "AdminUsers",
+  name: 'AdminUsers',
   data() {
     return {
       items: [],
       addDialogFormVisible: false,
       editDialogFormVisible: false,
       addForm: {
-        username: "",
-        password: "",
+        username: '',
+        password: ''
       },
       editForm: {
-        username: "",
-        password: "",
+        username: '',
+        password: ''
       },
-      editId: "",
-      formLabelWidth: "100px",
-      adminURL: "admin_users",
-    };
+      editId: '',
+      formLabelWidth: '100px',
+      adminURL: 'admin_users'
+    }
   },
   created() {
-    this.fetch();
+    this.fetch()
   },
   methods: {
     openAddDialog() {
-      this.addDialogFormVisible = true;
+      this.addDialogFormVisible = true
       this.$nextTick(() => {
-        this.$refs.ruleAddForm.resetFields();
-      });
+        this.$refs.ruleAddForm.resetFields()
+      })
     },
     async addCategory() {
-      this.addDialogFormVisible = false;
-      await this.$refs.ruleAddForm.validate(async (valid) => {
+      this.addDialogFormVisible = false
+      await this.$refs.ruleAddForm.validate(async(valid) => {
         if (valid) {
-          await addCategories(this.addForm, this.adminURL);
-          this.$message.success("保存成功！");
-          await this.fetch();
+          await addCategories(this.addForm, this.adminURL)
+          this.$message.success('保存成功！')
+          await this.fetch()
         } else {
-          this.$message.warning("请输入管理员名称");
-          return false;
+          this.$message.warning('请输入管理员名称')
+          return false
         }
-      });
+      })
     },
     async fetch() {
-      const res = await categoriesList(this.adminURL);
+      const res = await categoriesList(this.adminURL)
       this.items = res.data
     },
     async handleClick(row) {
-      this.editDialogFormVisible = true;
-      const res = await categoryDetail(row._id, this.adminURL);
-      this.editId = res.data._id;
-      this.editForm = Object.assign({}, this.editForm, res.data);
+      this.editDialogFormVisible = true
+      const res = await categoryDetail(row._id, this.adminURL)
+      this.editId = res.data._id
+      this.editForm = Object.assign({}, this.editForm, res.data)
     },
     async editCategory() {
-      this.editDialogFormVisible = false;
-      await editCategories(this.editId, this.editForm, this.adminURL);
-      await this.fetch();
+      this.editDialogFormVisible = false
+      await editCategories(this.editId, this.editForm, this.adminURL)
+      await this.fetch()
     },
     delClick(row) {
-      this.$confirm(`是否确定删除管理员"${row.name}"?`, "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
+      this.$confirm(`是否确定删除管理员"${row.name}"?`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
       })
-        .then(async () => {
-          const res = await delCategory(row._id, this.adminURL);
-          if (!res.data.success) return;
-          await this.fetch();
-          this.$message.success("删除成功！");
+        .then(async() => {
+          const res = await delCategory(row._id, this.adminURL)
+          if (!res.data.success) return
+          await this.fetch()
+          this.$message.success('删除成功！')
         })
-        .catch((err) => err);
-    },
-  },
-};
+        .catch((err) => err)
+    }
+  }
+}
 </script>
 <style scoped>
 .el-dialog {

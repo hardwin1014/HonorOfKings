@@ -8,7 +8,7 @@
             v-model="loginModel.username"
             class="input"
             placeholder="username"
-          />
+          >
         </el-form-item>
         <el-form-item label="password" class="form-item">
           <input
@@ -16,7 +16,7 @@
             class="input"
             type="password"
             placeholder="password"
-          />
+          >
         </el-form-item>
         <el-button class="btn" @click="loginBtn">Login</el-button>
       </el-form>
@@ -25,29 +25,29 @@
 </template>
 
 <script>
-import { login } from "api/login";
+import { login } from 'api/login'
 export default {
-  name: "Index",
+  name: 'Index',
   data() {
     return {
-      labelPosition: "right",
+      labelPosition: 'right',
       loginModel: {
-        username: "",
-        password: "",
-      },
-    };
+        username: '',
+        password: ''
+      }
+    }
   },
   methods: {
     async loginBtn() {
-      const res = await login(this.loginModel);
-      localStorage.token = res.data.token; // token 包含加密的ID
+      const res = await login(this.loginModel)
+      localStorage.token = res.data.token // token 包含加密的ID
       // sessionStorage.token = JSON.parse(res.data).token; 会话结束就没了
       // 一般放cookie里面
-      await this.$router.push("/");
-      this.$message.success("login success！");
-    },
-  },
-};
+      await this.$router.push('/')
+      this.$message.success('login success！')
+    }
+  }
+}
 </script>
 
 <style scoped>

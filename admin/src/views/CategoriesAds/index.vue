@@ -1,21 +1,27 @@
 <template>
   <div id="categoriesList">
     <el-card class="box-card">
-      <el-button type="success" class="addBtn" @click="openAddDialog"
-        >新增广告位</el-button
-      >
+      <el-button
+        type="success"
+        class="addBtn"
+        @click="openAddDialog"
+      >新增广告位</el-button>
       <h1>广告位列表</h1>
       <el-table :data="items" class="flex1">
         <el-table-column prop="_id" label="ID" />
         <el-table-column prop="name" label="广告位名称" />
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button type="text" size="small" @click="handleClick(scope.row)"
-              >编辑</el-button
-            >
-            <el-button type="text" size="small" @click="delClick(scope.row)"
-              >删除</el-button
-            >
+            <el-button
+              type="text"
+              size="small"
+              @click="handleClick(scope.row)"
+            >编辑</el-button>
+            <el-button
+              type="text"
+              size="small"
+              @click="delClick(scope.row)"
+            >删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -34,8 +40,7 @@
               style="margin-bottom: 20px"
               size="small"
               @click="addForm.items.push({})"
-              ><i class="el-icon-plus" />添加广告</el-button
-            >
+            ><i class="el-icon-plus" />添加广告</el-button>
             <el-row
               type="flex"
               style="
@@ -65,7 +70,7 @@
                     :show-file-list="false"
                     :on-success="(res) => $set(item, 'image', res.url)"
                   >
-                    <img v-if="item.image" :src="item.image" class="avatar" />
+                    <img v-if="item.image" :src="item.image" class="avatar">
                     <i v-else class="el-icon-plus avatar-uploader-icon" />
                   </el-upload>
                 </el-form-item>
@@ -74,8 +79,7 @@
                     type="danger"
                     size="small"
                     @click="addForm.items.splice(i, 1)"
-                    >删除</el-button
-                  >
+                  >删除</el-button>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -101,8 +105,7 @@
               style="margin-bottom: 20px"
               size="small"
               @click="editForm.items.push({})"
-              ><i class="el-icon-plus" />添加广告</el-button
-            >
+            ><i class="el-icon-plus" />添加广告</el-button>
             <el-row
               type="flex"
               style="
@@ -132,7 +135,7 @@
                     :headers="getAuthHeaders()"
                     :on-success="(res) => $set(item, 'image', res.url)"
                   >
-                    <img v-if="item.image" :src="item.image" class="avatar" />
+                    <img v-if="item.image" :src="item.image" class="avatar">
                     <i v-else class="el-icon-plus avatar-uploader-icon" />
                   </el-upload>
                 </el-form-item>
@@ -141,8 +144,7 @@
                     type="danger"
                     size="small"
                     @click="editForm.items.splice(i, 1)"
-                    >删除</el-button
-                  >
+                  >删除</el-button>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -163,75 +165,75 @@ import {
   categoriesList,
   categoryDetail,
   delCategory,
-  editCategories,
-} from "api/categories";
+  editCategories
+} from 'api/categories'
 export default {
-  name: "CategoriesList",
+  name: 'CategoriesList',
   data() {
     return {
       items: [],
       addDialogFormVisible: false,
       editDialogFormVisible: false,
       addForm: {
-        name: "",
-        items: [],
+        name: '',
+        items: []
       },
       editForm: {
-        name: "",
-        items: [],
+        name: '',
+        items: []
       },
-      editId: "",
-      formLabelWidth: "100px",
-      adsURL: "ads",
-    };
+      editId: '',
+      formLabelWidth: '100px',
+      adsURL: 'ads'
+    }
   },
   created() {
-    this.fetch();
+    this.fetch()
   },
   methods: {
     openAddDialog() {
-      this.addDialogFormVisible = true;
+      this.addDialogFormVisible = true
       this.$nextTick(() => {
-        this.$refs.ruleAddForm.resetFields();
-      });
+        this.$refs.ruleAddForm.resetFields()
+      })
     },
     async addCategory() {
-      this.addDialogFormVisible = false;
-      await addCategories(this.addForm, this.adsURL);
-      this.$message.success("保存成功！");
-      await this.fetch();
+      this.addDialogFormVisible = false
+      await addCategories(this.addForm, this.adsURL)
+      this.$message.success('保存成功！')
+      await this.fetch()
     },
     async fetch() {
-      const res = await categoriesList(this.adsURL);
+      const res = await categoriesList(this.adsURL)
       this.items = res.data
     },
     async handleClick(row) {
-      this.editDialogFormVisible = true;
-      const res = await categoryDetail(row._id, this.adsURL);
-      this.editId = res.data._id;
-      this.editForm = Object.assign({}, this.editForm, res.data);
+      this.editDialogFormVisible = true
+      const res = await categoryDetail(row._id, this.adsURL)
+      this.editId = res.data._id
+      this.editForm = Object.assign({}, this.editForm, res.data)
     },
     async editCategory() {
-      this.editDialogFormVisible = false;
-      await editCategories(this.editId, this.editForm, this.adsURL);
-      await this.fetch();
+      this.editDialogFormVisible = false
+      await editCategories(this.editId, this.editForm, this.adsURL)
+      await this.fetch()
     },
     delClick(row) {
-      this.$confirm(`是否确定删除广告位"${row.name}"?`, "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
+      this.$confirm(`是否确定删除广告位"${row.name}"?`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
       })
-        .then(async () => {
-          const res = await delCategory(row._id, this.adsURL);
-          if (!res.data.success) return;
-          await this.fetch();
-          this.$message.success("删除成功！");
+        .then(async() => {
+          const res = await delCategory(row._id, this.adsURL)
+          if (!res.data.success) return
+          await this.fetch()
+          this.$message.success('删除成功！')
         })
-        .catch((err) => err);
-    },
-  },
-};
+        .catch((err) => err)
+    }
+  }
+}
 </script>
 <style scoped>
 .addBtn {

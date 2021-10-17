@@ -1,0 +1,37 @@
+*{
+  box-sizing: border-box;
+}
+body{
+  font: 12px/1.5 "Helvetica Neue",Helvetica,STHeiTi,'\5FAE\8F6F\96C5\9ED1',sans-serif!important;
+  background: #f1f1f1;
+  min-width: 320px;
+}
+a{
+  color: #999;
+}
+
+$colors: (
+  "primary": rgb(219, 158, 63),
+  "white": #fff,
+  "light": #f9f9f9,
+  "grey": #999,
+  "dark-a": #333,
+  "dark": #222,
+  "black": #000
+);
+
+@each $colorKey,$color in $colors{
+  .text-#{$colorKey}{
+    color: $color;
+  }
+  .bg-#{$colorKey}{
+    background-color:  $color;
+  }
+}
+
+// test
+@each $var in (left,center,right){
+  .text-#{$var}{
+    text-align: $var;
+  }
+}

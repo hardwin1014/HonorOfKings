@@ -7,6 +7,9 @@ import 'amfe-flexible'
 import 'normalize.css'
 import './assets/styles/index.scss'
 
+import { Button } from 'vant'
+Vue.use(Button)
+
 Vue.config.productionTip = false
 
 new Vue({

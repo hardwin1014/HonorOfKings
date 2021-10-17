@@ -19,8 +19,4 @@ export default {
 }
 </script>
 <style scoped lang="scss">
-p{
-  color: red;
-  font-size: 16px;
-}
 </style>

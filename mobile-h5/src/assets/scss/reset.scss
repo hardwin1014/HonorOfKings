@@ -1,0 +1,55 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Helvetica Neue", Helvetica, STHeiTi, 微软雅黑, sans-serif;
+  background: #f1f1f1;
+}
+
+a {
+  color: #999;
+  text-decoration: none;
+}
+
+@import "./util/color.scss";
+@import "./util/elementSize.scss";
+@import "./util/flex.scss";
+@import "./util/font.scss";
+@import "./util/spacing.scss";
+@import "./util/border.scss";
+@import "./util/position.scss";
+
+//button
+.btn {
+  border: none;
+  font-size: map-get($font-sizes, "md");
+  outline: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.ws-nowrap {
+  white-space: nowrap;
+}
+
+.overflow-ellipsis {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.nav {
+  display: flex;
+  .nav-item {
+    border-bottom: 2px solid transparent;
+
+    &.active {
+      border-bottom-color: #db9e3f;
+      color: #db9e3f;
+    }
+  }
+}
